@@ -1,5 +1,11 @@
 {
     "name": "romain/rltounrament",
+    "autoload": {
+        "psr-4": {
+            "Mvc\\": "src/",
+            "Config\\": "config/"
+        }
+    },
     "authors": [
         {
             "name": "RomainLAU",
