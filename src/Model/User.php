@@ -1,4 +1,10 @@
 <?php
+namespace RocketLeagoueTournament\Model;
+use Config\Model;
+use PDO;
+
+
+
 
 class User
 {
