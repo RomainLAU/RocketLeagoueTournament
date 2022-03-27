@@ -12,7 +12,7 @@ class UserModel extends Model
     public function createUser(string $lastname, string $firstname, string $mail, string $password) 
     {
 
-        $statement = $this->pdo->prepare('INSERT INTO `users` (`lastname`, `firstname`, `mail`, `password`) VALUES (:lastname, :firstname, :mail, :password)');
+        $statement = $this->pdo->prepare('INSERT INTO `user` (`lastname`, `firstname`, `mail`, `password`) VALUES (:lastname, :firstname, :mail, :password)');
 
         $statement->execute([
             'lastname' => $lastname,
@@ -24,7 +24,7 @@ class UserModel extends Model
 
     public function loginIn(string $mail) {
 
-        $statement = $this->pdo->prepare('SELECT * FROM `users` WHERE `mail` = :mail');
+        $statement = $this->pdo->prepare('SELECT * FROM `user` WHERE `mail` = :mail');
 
         $statement->execute([
             'mail' => $mail,
