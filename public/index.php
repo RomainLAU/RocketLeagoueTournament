@@ -18,9 +18,7 @@ $router->before('GET', '/register', function() {
     }
 });
 
-$router->get('/', function () {
-    echo "Accueil";
-});
+$router->get('/', 'Mvc\Controller\AccueilController@displayAccueil');
 
 $router->get('/register', 'Mvc\Controller\UserController@register');
 $router->post('/register', 'Mvc\Controller\UserController@register');
