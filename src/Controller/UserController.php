@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../model/User.php';
+require_once __DIR__ . '/../Model/User.php';
 
 class UserController
 {
@@ -8,6 +8,6 @@ class UserController
     {
         $userModel = new User();
         $users = $userModel->findAll();
-        require_once __DIR__.'/../view/user/users.php';
+        require_once __DIR__.'/../View/user/users.php';
     }
 }
