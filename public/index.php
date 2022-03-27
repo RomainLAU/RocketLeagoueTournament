@@ -13,7 +13,7 @@ $router->before('GET', '/admin', function() {
 });
 
 $router->before('GET', '/register', function() {
-    if (!(isset($_SESSION['user']))) {
+    if (isset($_SESSION['user'])) {
         header('location: /login');
     }
 });
