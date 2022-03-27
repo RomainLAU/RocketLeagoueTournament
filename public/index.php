@@ -35,10 +35,4 @@ $router->get('/deconnection', function() {
 
 $router->run();
 
-
-
-
-
-$router->run();
-
 ?>
