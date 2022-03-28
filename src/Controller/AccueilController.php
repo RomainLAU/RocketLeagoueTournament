@@ -12,7 +12,5 @@ class AccueilController extends Controller
         
         echo $this->twig->render('accueil.html.twig');
 
-        var_dump($_SESSION);
-
     }
 }
