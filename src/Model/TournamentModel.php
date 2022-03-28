@@ -20,6 +20,15 @@ class TournamentModel extends Model
             'host' => $host,
         ]);
     }
+
+
+    public function findAllTournaments()
+    {
+        $statement = $this->pdo->prepare('SELECT * FROM tournament');
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 
