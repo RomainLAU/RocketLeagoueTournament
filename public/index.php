@@ -1,8 +1,8 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-session_start();
 
+session_start();
 
 $router = new \Bramus\Router\Router();
 
@@ -17,7 +17,6 @@ $router->before('GET', '/register', function() {
         header('location: /login');
     }
 });
-
 
 $router->before('GET', '/', function() {
     if (isset($_SESSION['user'])) {
