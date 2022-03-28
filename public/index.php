@@ -18,9 +18,20 @@ $router->before('GET', '/register', function() {
     }
 });
 
-$router->get('/', function () {
-    echo "Accueil";
+
+$router->before('GET', '/', function() {
+    if (isset($_SESSION['user'])) {
+        header('location: /userConnected');
+    } else if (isset($_SESSION['admin'])) {
+        header('location: /adminConnected');
+    } else {
+        header('location: /');
+    }
 });
+
+$router->get('/', 'Mvc\Controller\AccueilController@displayAccueil');
+$router->get('/userConnected', 'Mvc\Controller\AccueilController@displayAccueilUserConnected');
+$router->get('/adminConnected', 'Mvc\Controller\AccueilController@displayAccueilAdminConnected');
 
 $router->get('/register', 'Mvc\Controller\UserController@register');
 $router->post('/register', 'Mvc\Controller\UserController@register');

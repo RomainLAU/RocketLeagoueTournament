@@ -43,7 +43,7 @@ class UserController extends Controller
                     'mail' => $account['mail'],
                 ];
 
-                header('Location:/admin');
+                header('Location:/');
                 exit();
 
             }
