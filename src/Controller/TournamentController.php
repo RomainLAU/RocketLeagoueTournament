@@ -27,4 +27,12 @@ class TournamentController extends Controller
 
         echo $this->twig->render('tournament/createTournament.html.twig');
     }
+    public function listTournament()
+    {
+        $tournaments = $this->tournamentModel->findAllTournaments();
+
+        echo $this->twig->render('tournament/listTournament.html.twig', [
+            'tournaments' => $tournaments
+        ]);
+    }
 }

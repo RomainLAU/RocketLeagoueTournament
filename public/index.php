@@ -53,7 +53,7 @@ $router->post('/listTournament', 'Mvc\Controller\TournamentController@listTourna
 
 $router->get('/deconnection', function() {
     session_destroy();
-    header('location: /');
+    header('location: /login');
 });
 
 $router->run();
