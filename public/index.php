@@ -48,8 +48,16 @@ $router->post('/login', 'Mvc\Controller\UserController@login');
 $router->get('/createTournament', 'Mvc\Controller\TournamentController@createTournament');
 $router->post('/createTournament', 'Mvc\Controller\TournamentController@createTournament');
 
-$router->get('/listTournament', 'Mvc\Controller\TournamentController@listTournament');
-$router->post('/listTournament', 'Mvc\Controller\TournamentController@listTournament');
+$router->mount('/listTournament', function() use ($router) {
+
+    $router->get('/', 'Mvc\Controller\TournamentController@listTournament');
+
+    $router->post('/', 'Mvc\Controller\TournamentController@listTournament');
+
+    $router->get('/(\d+)', 'Mvc\Controller\TournamentController@showDetails');
+});
+
+
 
 $router->get('/deconnection', function() {
     session_destroy();
