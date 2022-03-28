@@ -1,41 +1,38 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-session_start();
 
+session_start();
 
 $router = new \Bramus\Router\Router();
 
 $router->before('GET', '/admin', function() {
     if (!(isset($_SESSION['user']))) {
         header('location: /login');
+        exit();
     }
 });
 
 $router->before('GET', '/register', function() {
     if (isset($_SESSION['user'])) {
-        header('location: /login');
-    }
-});
-
-
-$router->before('GET', '/', function() {
-    if (isset($_SESSION['user'])) {
-        header('location: /userConnected');
-    } else if (isset($_SESSION['admin'])) {
-        header('location: /adminConnected');
-    } else {
         header('location: /');
+        exit();
     }
 });
 
+$router->before('GET', '/login', function() {
+    if (isset($_SESSION['user'])) {
+        header('location: /');
+        exit();
+    }
+});
 
 $router->before('GET', '/createTournament', function() {
     if (!isset($_SESSION['user'])) {
         header('location: /login');
+        exit();
     }
 });
-
 
 
 $router->get('/', 'Mvc\Controller\AccueilController@displayAccueil');
