@@ -48,9 +48,12 @@ $router->post('/login', 'Mvc\Controller\UserController@login');
 $router->get('/createTournament', 'Mvc\Controller\TournamentController@createTournament');
 $router->post('/createTournament', 'Mvc\Controller\TournamentController@createTournament');
 
+$router->get('/listTournament', 'Mvc\Controller\TournamentController@listTournament');
+$router->post('/listTournament', 'Mvc\Controller\TournamentController@listTournament');
+
 $router->get('/deconnection', function() {
     session_destroy();
-    header('location: /');
+    header('location: /login');
 });
 
 $router->run();
