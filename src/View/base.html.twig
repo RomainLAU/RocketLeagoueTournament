@@ -22,12 +22,14 @@
                 <a href="/">Accueil</a>
                 <a href="/createTournament">Create Tournament As Admin</a>
                 <a href="/deconnection">Disconnect</a>
+                <a href="/listTournament">List Tournament</a> 
 
             {% elseif session.user.role == 'user' %}
 
                     <a href="/">Accueil</a>
                     <a href="/createTournament">Create Tournament</a>
                     <a href="/deconnection">Disconnect</a>
+                    <a href="/listTournament">List Tournament</a>
 
             {% endif %}
 

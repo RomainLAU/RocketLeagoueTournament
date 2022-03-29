@@ -10,8 +10,8 @@
         {% for tournament in tournaments %}
             <li class="tournament">
                 <span><b>Title:</b> {{ tournament.name }}<br></span>
-                <span><b>Description:</b> {{ tournament.admissionPrice }}<br></span>
-                <span><b>Author:</b> {{ tournament.host }}<br></span>
+                <span><b>Price:</b> {{ tournament.admissionPrice }}<br></span>
+                <span><b>Host:</b> {{ tournament.host }}<br></span>
                 <span><a href="/listTournament/{{ tournament.id }}">Voir</a></span>
             </li>
         {% endfor %}
