@@ -36,9 +36,7 @@ class TournamentController extends Controller
         ]);
     }
 
-    public function showDetails() {
-
-        $id = substr($_SERVER['REQUEST_URI'], 16, 10);
+    public function showDetails(int $id) {
 
         $tournament = $this->tournamentModel->findOneTournament($id);
 
