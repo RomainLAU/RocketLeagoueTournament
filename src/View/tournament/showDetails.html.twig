@@ -1,0 +1,11 @@
+{% extends "/base.html.twig" %}
+
+{% block title %}Information about the tournament {{ tournament.name }}{% endblock %}
+
+{% block content %}
+
+<h1>{{ tournament.name }}</h1>
+<h2>Hosted by: {{ tournament.host }}</h2>
+<h3>Entrance price: {{ tournament.admissionPrice }}</h3>
+
+{% endblock %}

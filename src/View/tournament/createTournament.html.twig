@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Create Tournament{% endblock %}
+
+
+{% block content %}
+
+    <h1>Create you're own Tournament !</h1>
+
+    <form action="" method="POST">
+        <input type="text" placeholder="Tournament name" name="name" id="name">
+        <input type="text" placeholder="Enter a price" name="admissionPrice" id="admissionPrice">
+        <input type="submit" value="Create">
+    </form>
+
+{% endblock %}

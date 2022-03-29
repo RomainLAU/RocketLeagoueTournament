@@ -1,33 +1,39 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-session_start();
 
+session_start();
 
 $router = new \Bramus\Router\Router();
 
 $router->before('GET', '/admin', function() {
     if (!(isset($_SESSION['user']))) {
         header('location: /login');
+        exit();
     }
 });
 
 $router->before('GET', '/register', function() {
     if (isset($_SESSION['user'])) {
-        header('location: /login');
-    }
-});
-
-
-$router->before('GET', '/', function() {
-    if (isset($_SESSION['user'])) {
-        header('location: /userConnected');
-    } else if (isset($_SESSION['admin'])) {
-        header('location: /adminConnected');
-    } else {
         header('location: /');
+        exit();
     }
 });
+
+$router->before('GET', '/login', function() {
+    if (isset($_SESSION['user'])) {
+        header('location: /');
+        exit();
+    }
+});
+
+$router->before('GET', '/createTournament', function() {
+    if (!isset($_SESSION['user'])) {
+        header('location: /login');
+        exit();
+    }
+});
+
 
 $router->get('/', 'Mvc\Controller\AccueilController@displayAccueil');
 $router->get('/userConnected', 'Mvc\Controller\AccueilController@displayAccueilUserConnected');
@@ -39,9 +45,23 @@ $router->post('/register', 'Mvc\Controller\UserController@register');
 $router->get('/login', 'Mvc\Controller\UserController@login');
 $router->post('/login', 'Mvc\Controller\UserController@login');
 
+$router->get('/createTournament', 'Mvc\Controller\TournamentController@createTournament');
+$router->post('/createTournament', 'Mvc\Controller\TournamentController@createTournament');
+
+$router->mount('/listTournament', function() use ($router) {
+
+    $router->get('/', 'Mvc\Controller\TournamentController@listTournament');
+
+    $router->post('/', 'Mvc\Controller\TournamentController@listTournament');
+
+    $router->get('/(\d+)', 'Mvc\Controller\TournamentController@showDetails');
+});
+
+
+
 $router->get('/deconnection', function() {
     session_destroy();
-    header('location: /');
+    header('location: /login');
 });
 
 $router->run();

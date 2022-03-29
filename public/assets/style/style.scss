@@ -1,0 +1,42 @@
+#body{
+    font-family: sans-serif;
+    font-size: 16px;
+
+    header{
+        padding: 2rem;
+        display: flex;
+        column-gap: 1em;
+        
+        a{
+            color: blue;
+        }
+    }
+
+    h1{
+        font-weight: bold;
+        padding: 2rem;
+        font-size: 3em;
+    }
+    
+    #tournament-list{
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        row-gap: 1em;
+
+        .tournament{
+            list-style-type: none;
+            padding: 1em;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.2);
+            width: fit-content;
+            display: flex;
+            flex-direction: column;
+            row-gap: 0.2em;
+
+            b{
+                font-weight: bold;
+            }
+        }
+    }
+}
