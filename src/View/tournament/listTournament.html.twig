@@ -9,10 +9,10 @@
     <ul id="tournament-list">
         {% for tournament in tournaments %}
             <li class="tournament">
-                <span><b>Title:</b> {{ tournament.name }}<br></span>
-                <span><b>Price:</b> {{ tournament.admissionPrice }}<br></span>
-                <span><b>Host:</b> {{ tournament.host }}<br></span>
-                <span><a href="/listTournament/{{ tournament.id }}">Voir</a></span>
+                <b>Title:</b> {{ tournament.name }}<br>
+                <b>Price:</b> {{ tournament.admissionPrice }}<br>
+                <b>Host:</b> {{ tournament.host }}<br>
+                <a href="/tournament/{{ tournament.id }}">Voir</a>
             </li>
         {% endfor %}
     </ul>

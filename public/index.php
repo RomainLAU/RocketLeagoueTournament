@@ -42,6 +42,7 @@ $router->before('GET', '/buyToken', function() {
 });
 
 
+
 $router->get('/', 'Mvc\Controller\AccueilController@displayAccueil');
 $router->get('/userConnected', 'Mvc\Controller\AccueilController@displayAccueilUserConnected');
 $router->get('/adminConnected', 'Mvc\Controller\AccueilController@displayAccueilAdminConnected');
