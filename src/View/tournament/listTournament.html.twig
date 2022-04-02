@@ -12,8 +12,8 @@
         {% for tournament in tournaments %}
             <li>
                 <b>Title:</b> {{ tournament.name }}<br>
-                <b>Description:</b> {{ tournament.admissionPrice }}<br>
-                <b>Author:</b> {{ tournament.host }}<br>
+                <b>Price:</b> {{ tournament.admissionPrice }}<br>
+                <b>Host:</b> {{ tournament.host }}<br>
                 <a href="/tournament/{{ tournament.id }}">Voir</a>
             </li>
         {% endfor %}
