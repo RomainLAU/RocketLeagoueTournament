@@ -29,6 +29,16 @@ class TournamentModel extends Model
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function findOneTournament(int $id)
+    {
+        $statement = $this->pdo->prepare('SELECT * FROM tournament WHERE :id = id');
+        $statement->execute([
+            'id' => $id,
+        ]);
+
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
 }
 
 

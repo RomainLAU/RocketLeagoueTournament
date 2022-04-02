@@ -1,16 +1,14 @@
-{% extends "base.html.twig" %}
+{% extends "/base.html.twig" %}
 
 {% block title %}List Tournament{% endblock %}
 
 
 {% block content %}
 
-
-
-      <h1>List of Tournaments</h1>
-    <ul>
+    <h1>List of Tournaments</h1>
+    <ul id="tournament-list">
         {% for tournament in tournaments %}
-            <li>
+            <li class="tournament">
                 <b>Title:</b> {{ tournament.name }}<br>
                 <b>Price:</b> {{ tournament.admissionPrice }}<br>
                 <b>Host:</b> {{ tournament.host }}<br>
@@ -18,10 +16,5 @@
             </li>
         {% endfor %}
     </ul>
-
-
-
-
-
 
 {% endblock %}

@@ -34,6 +34,13 @@ $router->before('GET', '/createTournament', function() {
     }
 });
 
+$router->before('GET', '/buyToken', function() {
+    if (!isset($_SESSION['user'])) {
+        header('location: /login');
+        exit();
+    }
+});
+
 
 
 $router->get('/', 'Mvc\Controller\AccueilController@displayAccueil');
@@ -49,8 +56,19 @@ $router->post('/login', 'Mvc\Controller\UserController@login');
 $router->get('/createTournament', 'Mvc\Controller\TournamentController@createTournament');
 $router->post('/createTournament', 'Mvc\Controller\TournamentController@createTournament');
 
-$router->get('/listTournament', 'Mvc\Controller\TournamentController@listTournament');
-$router->post('/listTournament', 'Mvc\Controller\TournamentController@listTournament');
+$router->get('/buyToken', 'Mvc\Controller\UserController@buyToken');
+$router->post('/buyToken', 'Mvc\Controller\UserController@buyToken');
+
+$router->mount('/listTournament', function() use ($router) {
+
+    $router->get('/', 'Mvc\Controller\TournamentController@listTournament');
+
+    $router->post('/', 'Mvc\Controller\TournamentController@listTournament');
+
+    $router->get('/(\d+)', 'Mvc\Controller\TournamentController@showDetails');
+});
+
+
 
 $router->get('/deconnection', function() {
     session_destroy();

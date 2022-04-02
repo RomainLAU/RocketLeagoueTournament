@@ -6,43 +6,47 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}{% endblock %}</title>
+    <link href="assets/style/style.css" rel="stylesheet" type="text/css" />
+    <link href="assets/style/reset.css" rel="stylesheet" type="text/css" />
+    {% block stylesheets %}{% endblock %}
 </head>
-<body>
+<body id="body">
 
-{% block header %}
+<header>
+    {% block header %}
 
-    {% if session %}
+        {% if session %}
 
-        {% if session.user.role == 'admin' %}
-
-            <a href="/">Accueil</a>
-            <a href="/createTournament">Create Tournament As Admin</a>
-            <a href="/listTournament">List Tournament</a>
-            <a href="/deconnection">Disconnect</a>
-
-        {% elseif session.user.role == 'user' %}
+            {% if session.user.role == 'admin' %}
 
                 <a href="/">Accueil</a>
-                 <a href="/createTournament">Create Tournament As User</a>
-                <a href="/listTournament">List Tournament</a>
+                <a href="/createTournament">Create Tournament As Admin</a>
+                <a href="/listTournament">List Tournament</a> 
+                <a href="/buyToken">Buy Token</a>
                 <a href="/deconnection">Disconnect</a>
 
+            {% elseif session.user.role == 'user' %}
+
+                    <a href="/">Accueil</a>
+                    <a href="/deconnection">Disconnect</a>
+                    <a href="/listTournament">List Tournament</a>
+                    <a href="/buyToken">Buy Token</a>
+
+            {% endif %}
+
+        {% else %}
+
+            <a href="/">Accueil</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+    
         {% endif %}
 
-    {% else %}
-
-        <a href="/">Accueil</a>
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
-   
-    {% endif %}
-
-{% endblock %}
+    {% endblock %}
+</header>
     
 
-
-
-    {% block content %}
-    {% endblock %}
+{% block content %}
+{% endblock %}
 </body>
 </html>

@@ -15,7 +15,5 @@ class AccueilController extends Controller
     public function displayAccueil() {
         
         echo $this->twig->render('accueil.html.twig');
-        var_dump($_SESSION["user"]);
-
     }
 }

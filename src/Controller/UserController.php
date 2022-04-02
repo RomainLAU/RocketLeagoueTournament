@@ -36,23 +36,14 @@ class UserController extends Controller
 
             if (isset($_POST['password']) && isset($account['password']) && password_verify($_POST['password'], $account['password'])) {
 
-                if ($account['lastname'] === 'Paco') {
-                    $_SESSION['user'] = [
-                        'id' => $account['id'],
-                        'lastname' => $account['lastname'],
-                        'firstname' => $account['firstname'],
-                        'mail' => $account['mail'],
-                        'role' => 'admin'
-                    ];
-                } else {
-                    $_SESSION['user'] = [
-                        'id' => $account['id'],
-                        'lastname' => $account['lastname'],
-                        'firstname' => $account['firstname'],
-                        'mail' => $account['mail'],
-                        'role' => 'user'
-                    ];
-                }
+                $_SESSION['user'] = [
+                    'id' => $account['id'],
+                    'lastname' => $account['lastname'],
+                    'firstname' => $account['firstname'],
+                    'mail' => $account['mail'],
+                    'role' => $account['role'],
+                    'token' => $account['token'],
+                ];
 
                 header('Location:/');
                 exit();
@@ -61,5 +52,17 @@ class UserController extends Controller
         }
 
         echo $this->twig->render('user/login.html.twig');
+    }
+
+
+
+    public function buyToken() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['radioBuyToken'])) {
+
+            $this->userModel->buyToken($_SESSION["user"]["token"], $_SESSION["user"]["firstname"], intval($_POST['radioBuyToken']));
+            header('location: /');
+            exit();
+        }
+        echo $this->twig->render('user/buyToken.html.twig');
     }
 }
