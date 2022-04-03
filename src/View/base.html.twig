@@ -21,9 +21,10 @@
 
                 <a href="/">Accueil</a>
                 <a href="/createTournament">Create Tournament As Admin</a>
+                <a href="/deconnection">Disconnect</a>
                 <a href="/listTournament">List Tournament</a> 
                 <a href="/buyToken">Buy Token</a>
-                <a href="/deconnection">Disconnect</a>
+                <p>You have {{session.user.token}} token</p>
 
             {% elseif session.user.role == 'user' %}
 
@@ -31,6 +32,7 @@
                     <a href="/deconnection">Disconnect</a>
                     <a href="/listTournament">List Tournament</a>
                     <a href="/buyToken">Buy Token</a>
+                    <p>You have {{session.user.token}} token</p>
 
             {% endif %}
 

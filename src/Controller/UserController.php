@@ -36,6 +36,23 @@ class UserController extends Controller
 
             if (isset($_POST['password']) && isset($account['password']) && password_verify($_POST['password'], $account['password'])) {
 
+                if ($account['lastname'] === 'Paco') {
+                    $_SESSION['user'] = [
+                        'id' => $account['id'],
+                        'lastname' => $account['lastname'],
+                        'firstname' => $account['firstname'],
+                        'mail' => $account['mail'],
+                        'role' => 'admin'
+                    ];
+                } else {
+                    $_SESSION['user'] = [
+                        'id' => $account['id'],
+                        'lastname' => $account['lastname'],
+                        'firstname' => $account['firstname'],
+                        'mail' => $account['mail'],
+                        'role' => 'user'
+                    ];
+                }
                 $_SESSION['user'] = [
                     'id' => $account['id'],
                     'lastname' => $account['lastname'],
@@ -65,4 +82,6 @@ class UserController extends Controller
         }
         echo $this->twig->render('user/buyToken.html.twig');
     }
+    
+
 }

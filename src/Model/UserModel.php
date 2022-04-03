@@ -48,4 +48,14 @@ class UserModel extends Model
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function spendToken(int $token, String $firstname) {
+        $statement = $this->pdo->prepare('UPDATE `user` SET `token` = :token  WHERE `firstname` = :firstname ');
+
+        $statement->execute([
+            'token' => $token,
+            'firstname' => $firstname,
+        ]);
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }    
+
 }

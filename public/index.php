@@ -56,6 +56,8 @@ $router->post('/login', 'Mvc\Controller\UserController@login');
 $router->get('/createTournament', 'Mvc\Controller\TournamentController@createTournament');
 $router->post('/createTournament', 'Mvc\Controller\TournamentController@createTournament');
 
+
+
 $router->get('/buyToken', 'Mvc\Controller\UserController@buyToken');
 $router->post('/buyToken', 'Mvc\Controller\UserController@buyToken');
 
