@@ -42,6 +42,7 @@ class UserController extends Controller
                     'firstname' => $account['firstname'],
                     'mail' => $account['mail'],
                     'role' => $account['role'],
+                    'token' => $account['token'],
                 ];
 
                 header('Location:/');
@@ -51,5 +52,17 @@ class UserController extends Controller
         }
 
         echo $this->twig->render('user/login.html.twig');
+    }
+
+
+
+    public function buyToken() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['radioBuyToken'])) {
+
+            $this->userModel->buyToken($_SESSION["user"]["token"], $_SESSION["user"]["firstname"], intval($_POST['radioBuyToken']));
+            header('location: /');
+            exit();
+        }
+        echo $this->twig->render('user/buyToken.html.twig');
     }
 }

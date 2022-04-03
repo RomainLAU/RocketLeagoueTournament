@@ -1,7 +1,6 @@
 <?php
 
 namespace Mvc\Controller;
-
 use Config\Controller;
 use Mvc\Model\TournamentModel;
 use Twig\Environment;
@@ -18,9 +17,10 @@ class TournamentController extends Controller
     }
 
     public function createTournament() {
+        var_dump($_SESSION);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name']) && isset($_POST['admissionPrice']) && $_SESSION["user"]['token'] >= 100) {
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name']) && isset($_POST['admissionPrice'])) {
-
+            $_SESSION["user"]["token"] =  $_SESSION["user"]["token"] - 100; 
             $this->tournamentModel->createTournament($_POST['name'], $_POST['admissionPrice'], $_SESSION['user']['lastname']);
         }
 
@@ -28,7 +28,7 @@ class TournamentController extends Controller
     }
 
     public function listTournament() {
-
+      
         $tournaments = $this->tournamentModel->findAllTournaments();
 
         echo $this->twig->render('tournament/listTournament.html.twig', [
