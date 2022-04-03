@@ -34,6 +34,7 @@ class TournamentController extends Controller
 
 
     public function listTournament() {
+      
         $tournaments = $this->tournamentModel->findAllTournaments();
 
         echo $this->twig->render('tournament/listTournament.html.twig', [
