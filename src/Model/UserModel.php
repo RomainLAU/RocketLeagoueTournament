@@ -32,4 +32,30 @@ class UserModel extends Model
 
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
+
+
+
+
+    public function buyToken(int $token, String $firstname, int $ammount ) {
+        $statement = $this->pdo->prepare('UPDATE `user` SET `token` = :token + :ammount WHERE `firstname` = :firstname ');
+
+        $statement->execute([
+            'token' => $token,
+            'firstname' => $firstname,
+            'ammount' => $ammount,
+        ]);
+        $_SESSION["user"]["token"] = $_SESSION["user"]["token"] + $ammount; 
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function spendToken(int $token, String $firstname) {
+        $statement = $this->pdo->prepare('UPDATE `user` SET `token` = :token  WHERE `firstname` = :firstname ');
+
+        $statement->execute([
+            'token' => $token,
+            'firstname' => $firstname,
+        ]);
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }    
+
 }
