@@ -82,4 +82,6 @@ class UserController extends Controller
         }
         echo $this->twig->render('user/buyToken.html.twig');
     }
+    
+
 }

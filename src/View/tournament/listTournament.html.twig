@@ -8,11 +8,6 @@
     <h1>List of Tournaments</h1>
     <ul id="tournament-list">
         {% for tournament in tournaments %}
-            <li>
-                <b>Title:</b> {{ tournament.name }}<br>
-                <b>Price:</b> {{ tournament.admissionPrice }}<br>
-                <b>Host:</b> {{ tournament.host }}<br>
-                <a href="/tournament/{{ tournament.id }}">Voir</a>
 
             <li class="tournament">
                 <span><b>Title:</b> {{ tournament.name }}<br></span>
