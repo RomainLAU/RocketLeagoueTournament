@@ -46,7 +46,6 @@ class UserController extends Controller
 
                 header('Location:/');
                 exit();
-
             }
         }
 
