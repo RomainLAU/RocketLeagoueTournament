@@ -36,7 +36,7 @@ class UserController extends Controller
 
             if (isset($_POST['password']) && isset($account['password']) && password_verify($_POST['password'], $account['password'])) {
 
-                if ($account['lastname'] === 'Paco') {
+                if ($account['firstname'] === 'Paco') {
                     $_SESSION['user'] = [
                         'id' => $account['id'],
                         'lastname' => $account['lastname'],

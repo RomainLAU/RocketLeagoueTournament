@@ -40,15 +40,16 @@ class TournamentModel extends Model
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function spentToken(int $token, String $firstname, int $spend ) {
-        $statement = $this->pdo->prepare('UPDATE `user` SET `token` = :token - :spend WHERE `firstname` = :firstname ');
 
+
+
+
+    public function deleteTournament($id)
+    {
+        $statement = $this->pdo->prepare('DELETE FROM `tournament` WHERE `id` = :id');
         $statement->execute([
-            'token' => $token,
-            'firstname' => $firstname,
-            'spend' => $spend,
+            'id' => $id,
         ]);
-        $_SESSION["user"]["token"] = $_SESSION["user"]["token"] - $spend; 
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 }
