@@ -41,8 +41,6 @@ $router->before('GET', '/buyToken', function() {
     }
 });
 
-
-
 $router->get('/', 'Mvc\Controller\AccueilController@displayAccueil');
 $router->get('/userConnected', 'Mvc\Controller\AccueilController@displayAccueilUserConnected');
 $router->get('/adminConnected', 'Mvc\Controller\AccueilController@displayAccueilAdminConnected');
@@ -56,8 +54,6 @@ $router->post('/login', 'Mvc\Controller\UserController@login');
 $router->get('/createTournament', 'Mvc\Controller\TournamentController@createTournament');
 $router->post('/createTournament', 'Mvc\Controller\TournamentController@createTournament');
 
-
-
 $router->get('/buyToken', 'Mvc\Controller\UserController@buyToken');
 $router->post('/buyToken', 'Mvc\Controller\UserController@buyToken');
 
@@ -69,8 +65,6 @@ $router->mount('/listTournament', function() use ($router) {
 
     $router->get('/(\d+)', 'Mvc\Controller\TournamentController@showDetails');
 });
-
-
 
 $router->get('/deconnection', function() {
     session_destroy();
