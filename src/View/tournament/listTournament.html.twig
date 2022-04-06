@@ -14,9 +14,9 @@
                 <span><b>Price:</b> {{ tournament.admissionPrice }}<br></span>
                 <span><b>Host:</b> {{ tournament.host }}<br></span>
                 <span><a href="/listTournament/{{ tournament.id }}">Voir</a></span>
-                {%if session %}
+                {% if session %}
                     {% if session.user.role == 'admin' or  session.user.firstname == tournament.host %}
-                            <form method="POST" action="">
+                            <form method="POST" action="/listTournament/delete">
                                 <input type="submit" value="delete" name="{{tournament.id}}">
                             </form>
                     {% endif %}

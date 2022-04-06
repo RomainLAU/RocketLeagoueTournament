@@ -34,9 +34,6 @@ class TournamentController extends Controller
 
 
     public function listTournament() {
-        if(isset($_POST)){
-            $this->tournamentModel->deleteTournament(key($_POST));     
-        }
         $tournaments = $this->tournamentModel->findAllTournaments();
 
         echo $this->twig->render('tournament/listTournament.html.twig', [
@@ -53,4 +50,11 @@ class TournamentController extends Controller
     }
 
 
+    public function deleteTournament(){
+        if(isset($_POST)){
+            $this->tournamentModel->deleteTournament(key($_POST));     
+        }
+        header('location: /listTournament');
+        exit();
+    }
 }

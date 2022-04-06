@@ -73,12 +73,11 @@ $router->mount('/listTournament', function() use ($router) {
 
     $router->post('/', 'Mvc\Controller\TournamentController@listTournament');
 
+    $router->post('/delete', 'Mvc\Controller\TournamentController@deleteTournament');
+
     $router->get('/(\d+)', 'Mvc\Controller\TournamentController@showDetails');
 });
 
-$router->get('/listTournament', 'Mvc\Controller\TournamentController@deleteTournament');
-
-$router->post('/listTournament', 'Mvc\Controller\TournamentController@deleteTournament');
 
 
 $router->get('/deconnection', function() {

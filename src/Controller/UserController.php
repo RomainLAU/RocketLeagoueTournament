@@ -35,24 +35,6 @@ class UserController extends Controller
             $account = $this->userModel->loginIn($_POST['mail']);
 
             if (isset($_POST['password']) && isset($account['password']) && password_verify($_POST['password'], $account['password'])) {
-
-                if ($account['firstname'] === 'Paco') {
-                    $_SESSION['user'] = [
-                        'id' => $account['id'],
-                        'lastname' => $account['lastname'],
-                        'firstname' => $account['firstname'],
-                        'mail' => $account['mail'],
-                        'role' => 'admin'
-                    ];
-                } else {
-                    $_SESSION['user'] = [
-                        'id' => $account['id'],
-                        'lastname' => $account['lastname'],
-                        'firstname' => $account['firstname'],
-                        'mail' => $account['mail'],
-                        'role' => 'user'
-                    ];
-                }
                 $_SESSION['user'] = [
                     'id' => $account['id'],
                     'lastname' => $account['lastname'],
