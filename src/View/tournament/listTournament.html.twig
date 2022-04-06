@@ -23,6 +23,10 @@
                         <form method="POST" action="">
                             <input type="submit" value="join" name="{{ tournament.id }}">
                         </form>
+                    {% if session.user.role == 'admin' or  session.user.firstname == tournament.host %}
+                            <form method="POST" action="/listTournament/delete">
+                                <input type="submit" value="delete" name="{{tournament.id}}">
+                            </form>
                     {% endif %}
                 {% endif %}
             </li>
