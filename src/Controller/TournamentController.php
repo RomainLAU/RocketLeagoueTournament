@@ -54,10 +54,18 @@ class TournamentController extends Controller
             }
         };
 
-        $tournamentDetails = ['name' => $tournament[0]['name'],
-                            'host' => $tournament[0]['host'],
-                            'admissionPrice' => $tournament[0]['admissionPrice'],
-                            'tournamentParticipants' => $tournamentParticipants];
+        if (count($tournamentParticipants) > 0) {
+            $tournamentDetails = ['name' => $tournament[0]['name'],
+                'host' => $tournament[0]['host'],
+                'admissionPrice' => $tournament[0]['admissionPrice'],
+                'tournamentParticipants' => $tournamentParticipants
+            ];
+        } else {
+            $tournamentDetails = ['name' => $tournament[0]['name'],
+                'host' => $tournament[0]['host'],
+                'admissionPrice' => $tournament[0]['admissionPrice']
+            ];
+        }
 
         echo $this->twig->render('tournament/showDetails.html.twig', [
             'tournamentDetails' => $tournamentDetails,

@@ -8,10 +8,15 @@
 <h2>Hosted by: {{ tournamentDetails.host }}</h2>
 <h3>Entrance price: {{ tournamentDetails.admissionPrice }}</h3>
 
-<ol>
-    {% for participant in tournamentDetails.tournamentParticipants %}
-        <li>{{ participant }}</li>
-    {% endfor %}
-</ol>
+
+{% if tournamentDetails.tournamentParticipants[0] != null %}
+    <ol>
+        {% for participant in tournamentDetails.tournamentParticipants %}
+            <li>{{ participant }}</li>
+        {% endfor %}
+    </ol>
+{% else %}
+    <p>No players joined yet, be the first one !</p>
+{% endif %}
 
 {% endblock %}

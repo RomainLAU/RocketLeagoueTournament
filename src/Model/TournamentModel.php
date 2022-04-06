@@ -33,17 +33,17 @@ class TournamentModel extends Model
     public function findOneTournament(int $id)
     {
         $statement = $this->pdo->prepare('SELECT tournament.name, tournament.host, tournament.admissionPrice, user.pseudo 
-                                        FROM participant
-                                        INNER JOIN tournament ON participant.tournament_id = tournament.id
-                                        INNER JOIN user ON participant.user_id = user.id
-                                        WHERE tournament.id = :id');
+                                        FROM tournament
+                                        LEFT JOIN participant ON participant.tournament_id = tournament.id
+                                        LEFT JOIN user ON participant.user_id = user.id
+                                        WHERE tournament.id = :id;');
         $statement->execute([
             'id' => $id,
         ]);
 
-        
+        $tournamentInformations = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $tournamentInformations;
     }
 
     public function findParticipants(int $tournamentId)
