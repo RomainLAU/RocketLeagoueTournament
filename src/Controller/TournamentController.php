@@ -24,7 +24,7 @@ class TournamentController extends Controller
 
             $_SESSION["user"]["token"] =  $_SESSION["user"]["token"] - 100; 
             $this->tournamentModel->createTournament($_POST['name'], $_POST['admissionPrice'], $_SESSION['user']['pseudo']);
-            $this->userModel->spendToken($_SESSION["user"]["token"], $_SESSION["user"]["firstname"]);
+            $this->userModel->spendToken($_SESSION["user"]["token"], $_SESSION["user"]["firstnames"]);
             header('location: /');
             exit();
         }

@@ -15,8 +15,16 @@
                 <span><b>Host:</b> {{ tournament.host }}<br></span>
                 <span><a href="/listTournament/{{ tournament.id }}">Voir</a></span>
                 {% if session %}
-                    {% if session.user.role == 'admin' or session.user.firstname == tournament.host %}
+                    {% if session.user.role == 'admin' %}
                         <form method="POST" action="/listTournament/delete">
+                            <input type="submit" value="Delete" name="{{tournament.id}}">
+                        </form>
+                        <form method="POST" action="/listTournament/addPlayer">
+                            <input type="submit" value="Add player" name="{{tournament.id}}">
+                            <input type="text" placeholder="Player Pseudo" name="playerPseudo">
+                        </form>
+                    {% elseif session.user.pseudo == tournament.host%}
+                      <form method="POST" action="/listTournament/delete">
                             <input type="submit" value="Delete" name="{{tournament.id}}">
                         </form>
                         <form method="POST" action="/listTournament/addPlayer">

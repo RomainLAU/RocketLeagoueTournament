@@ -20,6 +20,7 @@ class UserModel extends Model
             'firstname' => $firstname,
             'mail' => $mail,
             'password' => $password,
+            'pseudo' => $pseudo,
         ]);
     }
 
