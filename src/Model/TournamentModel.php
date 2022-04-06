@@ -40,10 +40,6 @@ class TournamentModel extends Model
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-
-
-
-
     public function deleteTournament($id)
     {
         $statement = $this->pdo->prepare('DELETE FROM `tournament` WHERE `id` = :id');
