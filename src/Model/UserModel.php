@@ -33,9 +33,14 @@ class UserModel extends Model
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function findAllUsers()
+    {
+        $statement = $this->pdo->prepare('SELECT * FROM user');
+        $statement->execute();
 
-
-
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
     public function buyToken(int $token, String $firstname, int $ammount ) {
         $statement = $this->pdo->prepare('UPDATE `user` SET `token` = :token + :ammount WHERE `firstname` = :firstname ');
 

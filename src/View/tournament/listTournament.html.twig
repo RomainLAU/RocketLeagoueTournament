@@ -17,9 +17,13 @@
                 {% if session %}
                     {% if session.user.role == 'admin' or session.user.firstname == tournament.host %}
                         <form method="POST" action="/listTournament/delete">
-                            <input type="submit" value="delete" name="{{tournament.id}}">
+                            <input type="submit" value="Delete" name="{{tournament.id}}">
                         </form>
-                    {% else %}
+                        <form method="POST" action="/listTournament/addPlayer">
+                            <input type="submit" value="Add player" name="{{tournament.id}}">
+                            <input type="text" placeholder="Player Name" name="playerName">
+                        </form>
+                    {% elseif (session.user.role == 'user')%}
                         <form method="POST" action="/listTournament/join">
                             <input type="submit" value="join" name="{{ tournament.id }}">
                         </form>
@@ -28,5 +32,7 @@
             </li>
         {% endfor %}
     </ul>
+
+    
 
 {% endblock %}
