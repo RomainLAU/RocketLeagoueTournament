@@ -57,4 +57,12 @@ class TournamentController extends Controller
         header('location: /listTournament');
         exit();
     }
+
+    public function joinTournament(){
+        if(isset($_POST)){
+            $this->tournamentModel->addUserInTournament(key($_POST));     
+        }
+        header('location: /listTournament');
+        exit();
+    }
 }
