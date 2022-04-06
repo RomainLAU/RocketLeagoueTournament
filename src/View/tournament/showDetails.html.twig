@@ -1,12 +1,17 @@
 {% extends "/base.html.twig" %}
 
-{% block title %}Information about the tournament {{ tournament.name }}{% endblock %}
+{% block title %}Information about the tournament {{ tournaments.name }}{% endblock %}
 
 {% block content %}
 
-<h1>{{ tournament.name }}</h1>
-<h2>Hosted by: {{ tournament.host }}</h2>
-<h3>Entrance price: {{ tournament.admissionPrice }}</h3>
+<h1>{{ tournaments.name }}</h1>
+<h2>Hosted by: {{ tournaments.host }}</h2>
+<h3>Entrance price: {{ tournaments.admissionPrice }}</h3>
 
+<ul>
+    {% for tournament in tournaments %}
+        <li>{{ tournament.pseudo }}</li>
+    {% endfor %}
+</ul>
 
 {% endblock %}

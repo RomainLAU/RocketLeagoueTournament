@@ -17,9 +17,9 @@ class UserController extends Controller
 
     public function register() {
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['lastname']) && isset($_POST['firstname']) && isset($_POST['mail']) && isset($_POST['password'])) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pseudo']) && isset($_POST['lastname']) && isset($_POST['firstname']) && isset($_POST['mail']) && isset($_POST['password'])) {
 
-            $this->userModel->createUser($_POST['lastname'], $_POST['firstname'], $_POST['mail'], password_hash($_POST['password'], PASSWORD_DEFAULT));
+            $this->userModel->createUser($_POST['pseudo'], $_POST['lastname'], $_POST['firstname'], $_POST['mail'], password_hash($_POST['password'], PASSWORD_DEFAULT));
 
             header('location: /login');
             exit();
@@ -38,6 +38,7 @@ class UserController extends Controller
 
                 $_SESSION['user'] = [
                     'id' => $account['id'],
+                    'pseudo' => $account['pseudo'],
                     'lastname' => $account['lastname'],
                     'firstname' => $account['firstname'],
                     'mail' => $account['mail'],

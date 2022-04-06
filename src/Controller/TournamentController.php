@@ -23,7 +23,7 @@ class TournamentController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name']) && isset($_POST['admissionPrice']) && $_SESSION["user"]['token'] >= 100) {
 
             $_SESSION["user"]["token"] =  $_SESSION["user"]["token"] - 100; 
-            $this->tournamentModel->createTournament($_POST['name'], $_POST['admissionPrice'], $_SESSION['user']['lastname']);
+            $this->tournamentModel->createTournament($_POST['name'], $_POST['admissionPrice'], $_SESSION['user']['pseudo']);
             $this->userModel->spendToken($_SESSION["user"]["token"], $_SESSION["user"]["firstname"]);
             header('location: /');
             exit();
@@ -45,7 +45,7 @@ class TournamentController extends Controller
         $tournament = $this->tournamentModel->findOneTournament($id);
 
         echo $this->twig->render('tournament/showDetails.html.twig', [
-            'tournament' => $tournament
+            'tournaments' => $tournament
         ]);
     }
 
