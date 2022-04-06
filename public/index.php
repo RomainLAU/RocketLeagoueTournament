@@ -39,6 +39,12 @@ $router->before('GET', '/buyToken', function() {
         exit();
     }
 });
+$router->before('GET', '/listTournament', function() {
+    if (!isset($_SESSION['user'])) {
+        header('location: /login');
+        exit();
+    }
+});
 
 
 
@@ -69,6 +75,9 @@ $router->mount('/listTournament', function() use ($router) {
     $router->get('/(\d+)', 'Mvc\Controller\TournamentController@showDetails');
 });
 
+$router->get('/listTournament', 'Mvc\Controller\TournamentController@deleteTournament');
+
+$router->post('/listTournament', 'Mvc\Controller\TournamentController@deleteTournament');
 
 
 $router->get('/deconnection', function() {
