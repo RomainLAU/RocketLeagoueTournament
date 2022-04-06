@@ -41,7 +41,9 @@ class TournamentModel extends Model
             'id' => $id,
         ]);
 
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function findParticipants(int $tournamentId)

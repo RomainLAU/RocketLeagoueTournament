@@ -44,8 +44,23 @@ class TournamentController extends Controller
     public function showDetails(int $id) {
         $tournament = $this->tournamentModel->findOneTournament($id);
 
+        $tournamentParticipants = [];
+
+        foreach($tournament as $detail => $values) {
+            foreach($values as $key => $value) {
+                if ($key == 'pseudo') {
+                    $tournamentParticipants[] = $value;
+                }
+            }
+        };
+
+        $tournamentDetails = ['name' => $tournament[0]['name'],
+                            'host' => $tournament[0]['host'],
+                            'admissionPrice' => $tournament[0]['admissionPrice'],
+                            'tournamentParticipants' => $tournamentParticipants];
+
         echo $this->twig->render('tournament/showDetails.html.twig', [
-            'tournaments' => $tournament
+            'tournamentDetails' => $tournamentDetails,
         ]);
     }
 
