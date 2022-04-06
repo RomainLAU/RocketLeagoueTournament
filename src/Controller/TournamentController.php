@@ -23,7 +23,7 @@ class TournamentController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name']) && isset($_POST['admissionPrice']) && $_SESSION["user"]['token'] >= 100) {
 
             $_SESSION["user"]["token"] =  $_SESSION["user"]["token"] - 100; 
-            $this->tournamentModel->createTournament($_POST['name'], $_POST['admissionPrice'], $_SESSION['user']['lastname']);
+            $this->tournamentModel->createTournament($_POST['name'], $_POST['admissionPrice'], $_SESSION['user']['pseudo']);
             $this->userModel->spendToken($_SESSION["user"]["token"], $_SESSION["user"]["firstname"]);
             header('location: /');
             exit();
@@ -44,8 +44,23 @@ class TournamentController extends Controller
     public function showDetails(int $id) {
         $tournament = $this->tournamentModel->findOneTournament($id);
 
+        $tournamentParticipants = [];
+
+        foreach($tournament as $detail => $values) {
+            foreach($values as $key => $value) {
+                if ($key == 'pseudo') {
+                    $tournamentParticipants[] = $value;
+                }
+            }
+        };
+
+        $tournamentDetails = ['name' => $tournament[0]['name'],
+                            'host' => $tournament[0]['host'],
+                            'admissionPrice' => $tournament[0]['admissionPrice'],
+                            'tournamentParticipants' => $tournamentParticipants];
+
         echo $this->twig->render('tournament/showDetails.html.twig', [
-            'tournament' => $tournament
+            'tournamentDetails' => $tournamentDetails,
         ]);
     }
 
@@ -66,13 +81,13 @@ class TournamentController extends Controller
         exit();
     }
     public function addPlayerTournament(){  
-        $users = $this->userModel->findAllUsers();
+        $users = $this->tournamentModel->findAllUsers();
         echo $this->twig->render('tournament/listTournament.html.twig', [
             'users' => $users
         ]);
         if(isset($_POST)){
             foreach($users as $key => $user){
-                if($_POST['playerName'] === $user['firstname']){
+                if($_POST['playerPseudo'] === $user['pseudo']){
                     $this->tournamentModel->addPlayerTournament(key($_POST), $user['id']); 
                 }
             }    

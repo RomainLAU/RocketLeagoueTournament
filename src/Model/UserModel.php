@@ -9,12 +9,13 @@ use PDO;
 class UserModel extends Model
 {
 
-    public function createUser(string $lastname, string $firstname, string $mail, string $password) 
+    public function createUser(string $pseudo, string $lastname, string $firstname, string $mail, string $password) 
     {
 
-        $statement = $this->pdo->prepare('INSERT INTO `user` (`lastname`, `firstname`, `mail`, `password`) VALUES (:lastname, :firstname, :mail, :password)');
+        $statement = $this->pdo->prepare('INSERT INTO `user` (`pseudo`, `lastname`, `firstname`, `mail`, `password`) VALUES (:pseudo, :lastname, :firstname, :mail, :password)');
 
         $statement->execute([
+            'pseudo' => $pseudo,
             'lastname' => $lastname,
             'firstname' => $firstname,
             'mail' => $mail,
@@ -33,23 +34,27 @@ class UserModel extends Model
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function findAllUsers()
+    public function findUserById($id) 
     {
-        $statement = $this->pdo->prepare('SELECT * FROM user');
-        $statement->execute();
+        $statement = $this->pdo->prepare('SELECT * FROM `user` WHERE `id` = :id');
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        $statement->execute([
+            'id' => $id,
+        ]);
+
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
-    
-    public function buyToken(int $token, String $firstname, int $ammount ) {
+
+
+    public function buyToken(int $token, String $firstname, int $amount ) {
         $statement = $this->pdo->prepare('UPDATE `user` SET `token` = :token + :ammount WHERE `firstname` = :firstname ');
 
         $statement->execute([
             'token' => $token,
             'firstname' => $firstname,
-            'ammount' => $ammount,
+            'ammount' => $amount,
         ]);
-        $_SESSION["user"]["token"] = $_SESSION["user"]["token"] + $ammount; 
+        $_SESSION["user"]["token"] = $_SESSION["user"]["token"] + $amount; 
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 

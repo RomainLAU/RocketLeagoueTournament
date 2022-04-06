@@ -21,7 +21,7 @@
                         </form>
                         <form method="POST" action="/listTournament/addPlayer">
                             <input type="submit" value="Add player" name="{{tournament.id}}">
-                            <input type="text" placeholder="Player Name" name="playerName">
+                            <input type="text" placeholder="Player Pseudo" name="playerPseudo">
                         </form>
                     {% elseif (session.user.role == 'user')%}
                         <form method="POST" action="/listTournament/join">

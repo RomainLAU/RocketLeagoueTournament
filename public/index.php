@@ -52,15 +52,33 @@ $router->before('GET', '/delete', function() {
         exit();
     }
 });
+$router->before('GET', '/delete', function() {
+    if (!isset($_SESSION['user'])) {
+        header('location: /login');
+        exit();
+    }
+});
 $router->before('GET', '/join', function() {
     if (isset($_SESSION['user'])) {
         header('location: /');
         exit();
     }
 });
+$router->before('GET', '/join', function() {
+    if (!isset($_SESSION['user'])) {
+        header('location: /login');
+        exit();
+    }
+});
 $router->before('GET', '/addPlayer', function() {
     if (isset($_SESSION['user'])) {
         header('location: /');
+        exit();
+    }
+});
+$router->before('GET', '/addPlayer', function() {
+    if (!isset($_SESSION['user'])) {
+        header('location: /login');
         exit();
     }
 });
