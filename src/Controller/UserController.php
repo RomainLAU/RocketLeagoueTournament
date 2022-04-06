@@ -17,16 +17,17 @@ class UserController extends Controller
 
     public function register() {
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['lastname']) && isset($_POST['firstname']) && isset($_POST['mail']) && isset($_POST['password'])) {
-
-            $this->userModel->createUser($_POST['lastname'], $_POST['firstname'], $_POST['mail'], password_hash($_POST['password'], PASSWORD_DEFAULT));
-
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && strlen($_POST['lastname'] > 0) && strlen($_POST['firstname']) > 0 && filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)&& strlen($_POST['password']) > 5 && $_POST['passwordConfirm'] === $_POST['password']){
+           
+            $this->userModel->createUser($_POST['lastname'], $_POST['firstname'], $_POST['mail'], password_hash($_POST['password'], PASSWORD_DEFAULT), $_POST['passwordConfirm']);
+            
             header('location: /login');
             exit();
         }
-
         echo $this->twig->render('user/register.html.twig');
+        
     }
+
 
     public function login() {
 
@@ -70,7 +71,6 @@ class UserController extends Controller
 
         echo $this->twig->render('user/login.html.twig');
     }
-
 
 
     public function buyToken() {

@@ -49,8 +49,6 @@ $router->before('GET', '/listTournament', function() {
 
 
 $router->get('/', 'Mvc\Controller\AccueilController@displayAccueil');
-$router->get('/userConnected', 'Mvc\Controller\AccueilController@displayAccueilUserConnected');
-$router->get('/adminConnected', 'Mvc\Controller\AccueilController@displayAccueilAdminConnected');
 
 $router->get('/register', 'Mvc\Controller\UserController@register');
 $router->post('/register', 'Mvc\Controller\UserController@register');
