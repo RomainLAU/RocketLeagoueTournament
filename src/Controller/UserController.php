@@ -54,6 +54,15 @@ class UserController extends Controller
         echo $this->twig->render('user/login.html.twig');
     }
 
+    public function listUser() {
+        var_dump($users);
+        $users = $this->userModel->findAllUsers();
+
+        echo $this->twig->render('tournament/listTournament.html.twig', [
+            'users' => $users
+        ]);
+    }
+
     public function buyToken() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['radioBuyToken'])) {
 

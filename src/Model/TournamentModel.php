@@ -22,6 +22,7 @@ class TournamentModel extends Model
     }
 
 
+
     public function findAllTournaments()
     {
         $statement = $this->pdo->prepare('SELECT * FROM tournament');
@@ -29,6 +30,15 @@ class TournamentModel extends Model
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function findAllUsers()
+    {
+        $statement = $this->pdo->prepare('SELECT * FROM user');
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 
     public function findOneTournament(int $id)
     {
@@ -71,6 +81,15 @@ class TournamentModel extends Model
         $statement->execute([
             'tournament_id' => $id,
             'user_id' => $_SESSION['user']['id'],
+        ]);
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function addPlayerTournament($id,$idUser){
+        $statement = $this->pdo->prepare('INSERT INTO `participant` (`tournament_id`, `user_id`) VALUES (:tournament_id, :user_id)');
+        $statement->execute([
+            'tournament_id' => $id,
+            'user_id' => $idUser,
         ]);
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
