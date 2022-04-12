@@ -46,8 +46,8 @@ class TournamentController extends Controller
 
         $tournamentParticipants = [];
 
-        foreach($tournament as $detail => $values) {
-            foreach($values as $key => $value) {
+        foreach ($tournament as $detail => $values) {
+            foreach ($values as $key => $value) {
                 if ($key == 'pseudo') {
                     $tournamentParticipants[] = $value;
                 }
@@ -73,7 +73,7 @@ class TournamentController extends Controller
     }
 
 
-    public function deleteTournament(){
+    public function deleteTournament() {
         if(isset($_POST)){
             $this->tournamentModel->deleteTournament(key($_POST));     
         }
@@ -81,32 +81,46 @@ class TournamentController extends Controller
         exit();
     }
 
-    public function joinTournament(){
+    public function joinTournament() {
 
-        if(isset($_POST)){
+        if (isset($_POST)) {
 
-            if (count($this->tournamentModel->getParticipants(key($_POST))) < 8) {
+            $participants = $this->tournamentModel->getParticipants(key($_POST));
+
+            $isPlayerInTournament = false;
+
+            foreach ($participants as $participant) {
+                if ($participant['user_id'] === $_SESSION['user']['id']) {
+                    $isPlayerInTournament = true;
+                }
+            }
+
+            if (count($participants) < 8 && $isPlayerInTournament === false) {
 
                 $this->tournamentModel->addUserInTournament(key($_POST));
-
 
                 header('location: /listTournament');
                 exit();
 
             } else {
 
-                echo("<p style='color: red;'>Maximum players already joined this tournament.</p>");
+                echo("<p style='color: red;'>Maximum players already joined this tournament or you already joined the tournament.</p>");
 
             }
             
         }
     }
 
-    public function addPlayerTournament(){  
+    public function addPlayerTournament() {
+
         $users = $this->tournamentModel->findAllUsers();
-        if(isset($_POST)){
-            foreach($users as $key => $user){
-                if($_POST['playerPseudo'] === $user['pseudo']){
+
+        if (isset($_POST)) {
+
+            foreach ($users as $key => $user) {
+
+                if ($_POST['playerPseudo'] === $user['pseudo']) {
+
                     $this->tournamentModel->addPlayerTournament(key($_POST), $user['id']); 
                 }
             }    
