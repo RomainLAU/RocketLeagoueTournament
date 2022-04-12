@@ -74,9 +74,12 @@ class TournamentController extends Controller
 
 
     public function deleteTournament() {
-        if(isset($_POST)){
+
+        if (isset($_POST)) {
+
             $this->tournamentModel->deleteTournament(key($_POST));     
         }
+
         header('location: /listTournament');
         exit();
     }
@@ -89,22 +92,33 @@ class TournamentController extends Controller
 
             $isPlayerInTournament = false;
 
+            $tournamentPrice = ($this->tournamentModel->findOneTournament(key($_POST)))[0]['admissionPrice'];
+
+            $hasEnoughToken = false;
+
+            if (($_SESSION['user']['token'] - $tournamentPrice) >= 0) {
+
+                $hasEnoughToken = true;
+            }
+
             foreach ($participants as $participant) {
                 if ($participant['user_id'] === $_SESSION['user']['id']) {
                     $isPlayerInTournament = true;
                 }
             }
 
-            if (count($participants) < 8 && $isPlayerInTournament === false) {
+            if (count($participants) < 8 && $isPlayerInTournament === false && $hasEnoughToken === true) {
 
                 $this->tournamentModel->addUserInTournament(key($_POST));
+
+                $_SESSION['user']['token'] -= $tournamentPrice;
 
                 header('location: /listTournament');
                 exit();
 
             } else {
 
-                echo("<p style='color: red;'>Maximum players already joined this tournament or you already joined the tournament.</p>");
+                echo("<p style='color: red;'>Maximum players already joined this tournament or you already joined the tournament or you don't have enough tokens.</p>");
 
             }
             
