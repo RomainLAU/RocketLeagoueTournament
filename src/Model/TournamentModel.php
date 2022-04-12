@@ -82,6 +82,7 @@ class TournamentModel extends Model
             'tournament_id' => $id,
             'user_id' => $_SESSION['user']['id'],
         ]);
+        
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
