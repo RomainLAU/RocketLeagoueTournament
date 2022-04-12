@@ -94,6 +94,15 @@ class TournamentModel extends Model
         ]);
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function getParticipants($tournamentId) {
+
+        $statement = $this->pdo->prepare('SELECT * FROM `participant` WHERE tournament_id = :tournament_id');
+        $statement->execute([
+            'tournament_id' => $tournamentId,
+        ]);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 

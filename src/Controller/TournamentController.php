@@ -82,12 +82,24 @@ class TournamentController extends Controller
     }
 
     public function joinTournament(){
+
         if(isset($_POST)){
-            $this->tournamentModel->addUserInTournament(key($_POST));
+
+            if (count($this->tournamentModel->getParticipants(key($_POST))) < 8) {
+
+                $this->tournamentModel->addUserInTournament(key($_POST));
+
+
+                header('location: /listTournament');
+                exit();
+
+            } else {
+
+                echo("<p style='color: red;'>Maximum players already joined this tournament.</p>");
+
+            }
             
         }
-        header('location: /listTournament');
-        exit();
     }
 
     public function addPlayerTournament(){  
