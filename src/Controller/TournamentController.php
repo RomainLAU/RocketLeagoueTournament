@@ -20,12 +20,13 @@ class TournamentController extends Controller
     }
 
     public function createTournament() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name']) && isset($_POST['admissionPrice']) && $_SESSION["user"]['token'] >= 100) {
+
+        if (isset($_POST) && isset($_POST['name']) && isset($_POST['admissionPrice']) && $_SESSION["user"]['token'] >= 100) {
 
             $_SESSION["user"]["token"] =  $_SESSION["user"]["token"] - 100; 
             $this->tournamentModel->createTournament($_POST['name'], $_POST['admissionPrice'], $_SESSION['user']['pseudo']);
             $this->userModel->spendToken($_SESSION["user"]["token"], $_SESSION["user"]["firstnames"]);
-            header('location: /');
+            header('location: /listTournament');
             exit();
         }
 
@@ -42,7 +43,10 @@ class TournamentController extends Controller
     }
 
     public function showDetails(int $id) {
+
         $tournament = $this->tournamentModel->findOneTournament($id);
+
+        $matches = $this->tournamentModel->getMaches($id);
 
         $tournamentParticipants = [];
 
@@ -55,12 +59,14 @@ class TournamentController extends Controller
         };
 
         if (count($tournamentParticipants) > 0) {
+
             $tournamentDetails = ['name' => $tournament[0]['name'],
                 'host' => $tournament[0]['host'],
                 'admissionPrice' => $tournament[0]['admissionPrice'],
                 'tournamentParticipants' => $tournamentParticipants
             ];
         } else {
+
             $tournamentDetails = ['name' => $tournament[0]['name'],
                 'host' => $tournament[0]['host'],
                 'admissionPrice' => $tournament[0]['admissionPrice']
@@ -142,5 +148,37 @@ class TournamentController extends Controller
 
         header('location: /listTournament');
         exit();
+    }
+
+    public function createMatch(int $tournamentId) {
+
+        if (isset($_POST['buttonCreateMatch'])) {
+
+            $this->tournamentModel->createMatch($_POST['player1'], $_POST['goal_player1'], $_POST['player2'], $_POST['goal_player2'], $tournamentId, $_POST['isFinished']);
+            
+            header('location: /listTournament/' .$tournamentId);
+            exit();
+        }
+
+        echo $this->twig->render('tournament/createMatch.html.twig', [
+            'tournament' => $tournamentId,
+        ]);
+    }
+
+    public function updateMatch(int $id) {
+
+        if (isset($_POST)) {
+
+            $this->tournamentModel->updateMatch($id);
+            
+            header('location: /updateMatch/' . $id);
+            exit();
+        }
+
+        $matchDetail = $this->tournamentModel->getMatchInfo($id);
+
+        echo $this->twig->render('tournament/updateMatch.html.twig', [
+            'matchDetail' => $matchDetail,
+        ]);
     }
 }

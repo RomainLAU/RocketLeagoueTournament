@@ -51,6 +51,7 @@ $router->before('GET', '/delete', function() {
         exit();
     }
 });
+
 $router->before('GET', '/delete', function() {
     if (!isset($_SESSION['user'])) {
         header('location: /login');
@@ -113,10 +114,20 @@ $router->mount('/listTournament', function() use ($router) {
     $router->post('/addPlayer', 'Mvc\Controller\TournamentController@addPlayerTournament');
 });
 
+$router->mount('/listTournament/(\d+)', function() use ($router) {
+
+    $router->get('/createMatch', 'Mvc\Controller\TournamentController@createMatch');
+    
+    $router->post('/createMatch', 'Mvc\Controller\TournamentController@createMatch');
+
+    $router->get('/updateMatch/(\d+)', 'Mvc\Controller\TournamentController@updateMatch');
+
+    $router->post('/updateMatch/(\d+)', 'Mvc\Controller\TournamentController@updateMatch');
+});
 
 $router->get('/deconnection', function() {
     session_destroy();
-    header('location: /login');
+    header('location: /');
 });
 
 $router->run();

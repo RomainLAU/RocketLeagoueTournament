@@ -103,7 +103,37 @@ class TournamentModel extends Model
         ]);
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function createMatch($player1, $goal_player1, $player2, $goal_player2, $tournamentId, $isFinished) {
+
+        $statement = $this->pdo->prepare('INSERT INTO `matches` (`player1`, `goal_player1`, `player2`, `goal_player2`, `tournament_id`, `isFinished`) VALUES (:player1, :goal_player1, :player2, :goal_player2, :tournament_id, :isFinished)');
+        $statement->execute([
+            'player1' => $player1,
+            'goal_player1' => $goal_player1,
+            'player2' => $player2,
+            'goal_player2' => $goal_player2,
+            'tournament_id' => $tournamentId,
+            'isFinished' => $isFinished,
+        ]);
+    }
+
+    public function updateMatch($matchId, $goal_player1, $goal_player2, $isFinished) {
+
+        $statement = $this->pdo->prepare('UPDATE `matches` SET `goal_player1` = :goal_player1, `goal_player2` = :goal_player2, `isFinished` = :isFinished) WHERE `id` = :matchId');
+        $statement->execute([
+            'goal_player1' => $goal_player1,
+            'goal_player2' => $goal_player2,
+            'IsFinished' => $isFinished,
+        ]);
+    }
+
+    public function getMatches(int $tournamentId) {
+
+        $statement = $this->pdo->prepare('SELECT * FROM `matches` WHERE tournament_id = :tournament_id');
+        $statement->execute([
+            'tournament_id' => $tournamentId,
+        ]);
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
-
-
-
