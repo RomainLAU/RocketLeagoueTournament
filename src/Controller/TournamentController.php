@@ -46,8 +46,6 @@ class TournamentController extends Controller
 
         $tournament = $this->tournamentModel->findOneTournament($id);
 
-        $matches = $this->tournamentModel->getMaches($id);
-
         $tournamentParticipants = [];
 
         foreach ($tournament as $detail => $values) {
@@ -73,8 +71,30 @@ class TournamentController extends Controller
             ];
         }
 
+        $matches = $this->tournamentModel->getMatches($id);
+
+        foreach ($matches as $match) {
+
+            foreach ($match as $index => $value) {
+
+                if ($index === 'player1' || $index === 'player2') {
+
+                    $pseudo = ($this->userModel->findUserById($value))['pseudo'];
+
+                    $match[$index] = $pseudo;
+                }
+
+                $newValues = $match;
+            }
+
+            $newMatches[] = $match;
+        }
+
+        $matches = $newMatches;
+
         echo $this->twig->render('tournament/showDetails.html.twig', [
             'tournamentDetails' => $tournamentDetails,
+            'matches' => $matches,
         ]);
     }
 
