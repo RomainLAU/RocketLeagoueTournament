@@ -16,6 +16,10 @@
         {% endfor %}
     </ol>
 
+    {% if tournamentDetails.host != session.user.pseudo or session.user.role == 'admin' %}
+        <a href={{ "/listTournament/" ~ tournamentId ~ "/createMatch"}}>Create a match</a>
+    {% endif %}
+
     <ul>
         {% for match in matches %}
             <li>Match n°{{ match.id }}:<br>
@@ -24,7 +28,10 @@
                 {% if match.isFinished == 'true' %}
                     Match terminé.
                 {% else %}
-                    Match en cours.
+                    Match en cours. <br>
+                        {% if tournamentDetails.host != session.user.pseudo %}
+                            <a href={{ "/listTournament/" ~ tournamentId ~ "/updateMatch/" ~ match.id }}>Update the match</a>
+                        {% endif %}
                 {% endif %}
             </li>
         {% endfor %}

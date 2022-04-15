@@ -95,6 +95,7 @@ class TournamentController extends Controller
         echo $this->twig->render('tournament/showDetails.html.twig', [
             'tournamentDetails' => $tournamentDetails,
             'matches' => $matches,
+            'tournamentId' => $id,
         ]);
     }
 
@@ -185,17 +186,17 @@ class TournamentController extends Controller
         ]);
     }
 
-    public function updateMatch(int $id) {
+    public function updateMatch(int $tournamentId, int $matchId) {
 
-        if (isset($_POST)) {
+        if (isset($_POST['buttonUpdateMatch'])) {
 
-            $this->tournamentModel->updateMatch($id);
+            $this->tournamentModel->updateMatch($matchId, $_POST['goal_player1'], $_POST['goal_player2'], $_POST['isFinished']);
             
-            header('location: /updateMatch/' . $id);
+            header('location: /listTournament/' . $tournamentId);
             exit();
         }
 
-        $matchDetail = $this->tournamentModel->getMatchInfo($id);
+        $matchDetail = $this->tournamentModel->getMatchById($matchId);
 
         echo $this->twig->render('tournament/updateMatch.html.twig', [
             'matchDetail' => $matchDetail,

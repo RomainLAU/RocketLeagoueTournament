@@ -119,11 +119,12 @@ class TournamentModel extends Model
 
     public function updateMatch($matchId, $goal_player1, $goal_player2, $isFinished) {
 
-        $statement = $this->pdo->prepare('UPDATE `matches` SET `goal_player1` = :goal_player1, `goal_player2` = :goal_player2, `isFinished` = :isFinished) WHERE `id` = :matchId');
+        $statement = $this->pdo->prepare('UPDATE `matches` SET `goal_player1` = :goal_player1, `goal_player2` = :goal_player2, `isFinished` = :isFinished WHERE `id` = :matchId');
         $statement->execute([
+            'matchId' => $matchId,
             'goal_player1' => $goal_player1,
             'goal_player2' => $goal_player2,
-            'IsFinished' => $isFinished,
+            'isFinished' => $isFinished,
         ]);
     }
 
@@ -135,5 +136,15 @@ class TournamentModel extends Model
         ]);
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getMatchById(int $matchId) {
+
+        $statement = $this->pdo->prepare('SELECT * FROM `matches` WHERE id = :id');
+        $statement->execute([
+            'id' => $matchId,
+        ]);
+
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 }
