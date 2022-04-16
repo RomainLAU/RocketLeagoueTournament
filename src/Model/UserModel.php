@@ -12,7 +12,7 @@ class UserModel extends Model
     public function createUser(string $pseudo, string $lastname, string $firstname, string $mail, string $password) 
     {
 
-        $statement = $this->pdo->prepare('INSERT INTO `user` (`pseudo`, `lastname`, `firstname`, `mail`, `password`) VALUES (:pseudo, :lastname, :firstname, :mail, :password)');
+        $statement = $this->pdo->prepare('INSERT INTO `user` (`pseudo`, `lastname`, `firstname`, `mail`, `password`, `timeRole`) VALUES (:pseudo, :lastname, :firstname, :mail, :password, :timeRole)');
 
         $statement->execute([
             'pseudo' => $pseudo,
@@ -20,7 +20,7 @@ class UserModel extends Model
             'firstname' => $firstname,
             'mail' => $mail,
             'password' => $password,
-            'pseudo' => $pseudo,
+            'timeRole' => 0,
         ]);
     }
 
@@ -71,12 +71,21 @@ class UserModel extends Model
 
     public function buyHost() {
 
-        $statement = $this->pdo->prepare('UPDATE `user` SET `role` = :role, `token` = :token WHERE `id` = :id');
+        $statement = $this->pdo->prepare('UPDATE `user` SET `role` = :role, `token` = :token, `timeRole`= :timeRole WHERE `id` = :id');
         $statement->execute([
             'role' => 'host',
             'token' => intval($_SESSION['user']['token']) - 1000,
             'id' => $_SESSION['user']['id'], 
+            'timeRole' => strtotime('now') + 604800,
+        ]);
+        $_SESSION["user"]["timeRole"] = $_SESSION["user"]["timeRole"] + strtotime('now') + 604800 ; 
+    }
+    public function changeRole() {
+
+        $statement = $this->pdo->prepare('UPDATE `user` SET `role` = :role, `timeRole`= :timeRole WHERE `id` = :id');
+        $statement->execute([
+            'role' => "user",
+            'id' => $_SESSION['user']['id'], 
         ]);
     }
-
 }

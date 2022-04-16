@@ -17,9 +17,9 @@ class UserController extends Controller
 
     public function register() {
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && strlen($_POST['lastname'] > 0) && strlen($_POST['firstname']) > 0 && filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)&& strlen($_POST['password']) > 5 && $_POST['passwordConfirm'] === $_POST['password']){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
            
-            $this->userModel->createUser($_POST['lastname'], $_POST['firstname'], $_POST['mail'], password_hash($_POST['password'], PASSWORD_DEFAULT), $_POST['passwordConfirm']);
+            $this->userModel->createUser($_POST['pseudo'],$_POST['lastname'], $_POST['firstname'], $_POST['mail'], password_hash($_POST['password'], PASSWORD_DEFAULT));
 
             header('location: /login');
             exit();
@@ -45,7 +45,14 @@ class UserController extends Controller
                     'mail' => $account['mail'],
                     'role' => $account['role'],
                     'token' => $account['token'],
+                    'timeRole' => $account['timeRole'] - strtotime('now'),
                 ];
+
+
+                if($_SESSION['user']['timeRole'] === 0){
+                    $this->userModel->changeRole();
+                    $_SESSION['user']['role'] = 'user';
+                }
 
                 header('Location:/');
                 exit();
@@ -87,6 +94,20 @@ class UserController extends Controller
 
             header('location: /profile');
             exit();
+        }else{
+            header('location: /profile');
         }
     }
+    
+
+
+
+
+
+
+
+
+
+
+
 }

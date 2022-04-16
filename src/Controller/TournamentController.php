@@ -36,9 +36,12 @@ class TournamentController extends Controller
 
     public function listTournament() {
         $tournaments = $this->tournamentModel->findAllTournaments();
-
+        $participants = $this->tournamentModel->findAllParticipant();
+        $users = $this->tournamentModel->findAllUser();
         echo $this->twig->render('tournament/listTournament.html.twig', [
             'tournaments' => $tournaments,
+            'participants' => $participants,
+            'users' => $users,
         ]);
     }
 
@@ -179,14 +182,13 @@ class TournamentController extends Controller
 
     public function addPlayerTournament() {
 
-        $users = $this->tournamentModel->findAllUsers();
+        $users = $this->tournamentModel->findAllUser();
 
         if (isset($_POST) && is_int($_POST['playerPseudo'])) {
 
             foreach ($users as $key => $user) {
 
                 if ($_POST['playerPseudo'] === $user['pseudo']) {
-
                     $this->tournamentModel->addPlayerTournament(key($_POST), $user['id']); 
                 }
             }    

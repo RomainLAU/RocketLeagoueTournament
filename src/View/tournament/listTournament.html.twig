@@ -7,7 +7,38 @@
     
     <h1>List of Tournaments</h1>
     <ul id="tournament-list">
-        {% for tournament in tournaments %}
+            {% for tournament in tournaments %}
+                    <li class="tournament">
+                        <span><b>Title:</b> {{ tournament.name }}<br></span>
+                        <span><b>Price:</b> {{ tournament.admissionPrice }}<br></span>
+                        <span><b>Host:</b> {{ tournament.host }}<br></span>
+                        <span><a href="/listTournament/{{ tournament.id }}">Voir</a></span>
+                        {% if session %}
+                            {% if session.user.role == 'admin' %}
+                                <form method="POST" action="/listTournament/delete">
+                                    <input  type="submit" value="Delete" name="{{tournament.id}}">
+                                </form>
+                                <form method="POST" action="/listTournament/addPlayer">
+                                    <input type="submit" value="Add player" name="{{tournament.id}}">
+                                    <input type="text" placeholder="Player Pseudo" name="playerPseudo">
+                                </form>
+                            {% elseif session.user.pseudo == tournament.host %}
+                            <form method="POST" action="/listTournament/delete">
+                                    <input type="submit" value="Delete" name="{{tournament.id}}">
+                                </form>
+                                <form method="POST" action="/listTournament/addPlayer">
+                                    <input type="submit" value="Add player" name="{{tournament.id}}">
+                                    <input type="text" placeholder="Player Pseudo" name="playerPseudo">
+                                </form>
+                            {% elseif (session.user.role == 'user')%}
+                                <form method="POST" action="/listTournament/join">
+                                    <input class="buttonJoin" type="submit" value="join" name="{{ tournament.id }}">
+                                </form>
+                            {% endif %}
+                        {% endif %}
+                    </li>
+            {% endfor %}
+        {# {% for tournament in tournaments %}
 
             <li class="tournament">
                 <span><b>Title:</b> {{ tournament.name }}<br></span>
@@ -42,9 +73,13 @@
                     </form>
                 {% endif %}
             </li>
-        {% endfor %}
+        {% endfor %} #}
     </ul>
 
+
     
+
+
+
 
 {% endblock %}

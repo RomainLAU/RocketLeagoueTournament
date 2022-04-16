@@ -31,7 +31,16 @@ class TournamentModel extends Model
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findAllUsers()
+    public function findAllParticipant()
+    {
+        $statement = $this->pdo->prepare('SELECT * FROM participant');
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    
+    public function findAllUser()
     {
         $statement = $this->pdo->prepare('SELECT * FROM user');
         $statement->execute();
@@ -65,6 +74,7 @@ class TournamentModel extends Model
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
 
     public function deleteTournament($id)
     {
