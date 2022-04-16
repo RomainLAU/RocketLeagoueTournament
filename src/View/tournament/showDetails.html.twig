@@ -30,7 +30,7 @@
                     Match terminé.
                 {% else %}
                     Match en cours. <br>
-                        {% if (tournamentDetails.host != session.user.pseudo or session.user.role == 'admin') and tournamentDetails.0.isFinished == 'false' %}
+                        {% if (tournamentDetails.host != session.user.pseudo and tournamentDetails.0.isFinished == 'false') or session.user.role == 'admin' %}
                             <a href={{ "/listTournament/" ~ tournamentId ~ "/updateMatch/" ~ match.id }}>Update the match</a>
                         {% endif %}
                 {% endif %}
@@ -48,6 +48,15 @@
         </ul>
     {% elseif tournamentDetails.isFinished == 'true' %}
         <h3>The winner is {{ tournamentDetails.winnerPseudo }}</h3>
+    {% endif %}
+    {% if session.user.role == 'admin' %}
+        <p>Need to change the winner ?</p>
+        <p>(click on the participant to select the winner)</p>
+        <ul>
+            {% for participant in tournamentDetails.tournamentParticipants %}
+                <li><a href={{ "/listTournament/" ~ tournamentId ~ "/setWinner/" ~ participant.id}}>{{ participant.pseudo }}</a></li>
+            {% endfor %}
+        </ul>
     {% endif %}
 {% else %}
     <p>No players joined yet, be the first one !</p>

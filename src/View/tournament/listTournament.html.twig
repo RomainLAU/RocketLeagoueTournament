@@ -14,7 +14,7 @@
                 <span><b>Price:</b> {{ tournament.admissionPrice }}<br></span>
                 <span><b>Host:</b> {{ tournament.host }}<br></span>
                 <span><a href="/listTournament/{{ tournament.id }}">Voir</a></span>
-                {% if session %}
+                {% if session and tournament.isFinished == 'false' %}
                     {% if session.user.role == 'admin' %}
                         <form method="POST" action="/listTournament/delete">
                             <input type="submit" value="Delete" name="{{tournament.id}}">
@@ -36,6 +36,10 @@
                             <input type="submit" value="join" name="{{ tournament.id }}">
                         </form>
                     {% endif %}
+                {% elseif session and session.user.role == 'admin' %}
+                    <form method="POST" action="/listTournament/delete">
+                        <input type="submit" value="Delete" name="{{tournament.id}}">
+                    </form>
                 {% endif %}
             </li>
         {% endfor %}

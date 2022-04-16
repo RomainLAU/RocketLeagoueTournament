@@ -39,12 +39,7 @@ $router->before('GET', '/buyToken', function() {
         exit();
     }
 });
-$router->before('GET', '/listTournament', function() {
-    if (!isset($_SESSION['user'])) {
-        header('location: /login');
-        exit();
-    }
-});
+
 $router->before('GET', '/delete', function() {
     if (isset($_SESSION['user'])) {
         header('location: /');
