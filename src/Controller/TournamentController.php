@@ -81,7 +81,7 @@ class TournamentController extends Controller
 
                     $pseudo = ($this->userModel->findUserById($value))['pseudo'];
 
-                    $match[$index] = $pseudo;
+                    $match[$index . '_pseudo'] = $pseudo;
                 }
 
                 $newValues = $match;
@@ -90,13 +90,22 @@ class TournamentController extends Controller
             $newMatches[] = $match;
         }
 
-        $matches = $newMatches;
+        if (isset($newMatches)) {
+            $matches = $newMatches;
+        }
 
-        echo $this->twig->render('tournament/showDetails.html.twig', [
-            'tournamentDetails' => $tournamentDetails,
-            'matches' => $matches,
-            'tournamentId' => $id,
-        ]);
+        if (count($matches) > 0) {
+            echo $this->twig->render('tournament/showDetails.html.twig', [
+                'tournamentDetails' => $tournamentDetails,
+                'matches' => $matches,
+                'tournamentId' => $id,
+            ]);
+        } else {
+            echo $this->twig->render('tournament/showDetails.html.twig', [
+                'tournamentDetails' => $tournamentDetails,
+                'tournamentId' => $id,
+            ]);
+        }
     }
 
 
@@ -181,8 +190,27 @@ class TournamentController extends Controller
             exit();
         }
 
+        $tournamentDetails = $this->tournamentModel->findParticipants($tournamentId);
+
+        $participants = [];
+
+        foreach ($tournamentDetails as $detail) {
+
+            foreach ($detail as $index => $value) {
+
+                if ($index === 'user_id') {
+
+                    $pseudo = $this->userModel->findUserById($value)['pseudo'];
+                    $participants[] = ['id' => $value, 'pseudo' => $pseudo];
+                }
+            }
+        }
+
+        // dd($participants);
+
         echo $this->twig->render('tournament/createMatch.html.twig', [
             'tournament' => $tournamentId,
+            'participants' => $participants,
         ]);
     }
 
@@ -197,6 +225,18 @@ class TournamentController extends Controller
         }
 
         $matchDetail = $this->tournamentModel->getMatchById($matchId);
+
+        foreach ($matchDetail as $index => $value) {
+
+            if ($index === 'player1' || $index === 'player2') {
+
+                $pseudo = ($this->userModel->findUserById($value))['pseudo'];
+
+                $matchDetail[$index . '_pseudo'] = $pseudo;
+            }
+
+            $newValues = $matchDetail;
+        }
 
         echo $this->twig->render('tournament/updateMatch.html.twig', [
             'matchDetail' => $matchDetail,

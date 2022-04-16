@@ -20,10 +20,10 @@
         <a href={{ "/listTournament/" ~ tournamentId ~ "/createMatch"}}>Create a match</a>
     {% endif %}
 
-    <ul>
+    <ol>
         {% for match in matches %}
-            <li>Match n°{{ match.id }}:<br>
-                Players: {{ match.player1 }} ( {{ match.goal_player1 }} ) VS {{ match.player2 }} ( {{ match.goal_player2 }} )<br>
+            <li>
+                Players: {{ match.player1_pseudo }} ( {{ match.goal_player1 }} ) VS {{ match.player2_pseudo }} ( {{ match.goal_player2 }} )<br>
 
                 {% if match.isFinished == 'true' %}
                     Match terminé.
@@ -35,7 +35,7 @@
                 {% endif %}
             </li>
         {% endfor %}
-    </ul>
+    </ol>
 {% else %}
     <p>No players joined yet, be the first one !</p>
 {% endif %}

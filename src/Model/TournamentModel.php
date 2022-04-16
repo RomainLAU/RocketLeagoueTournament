@@ -63,7 +63,7 @@ class TournamentModel extends Model
             'tournament_id' => $tournamentId,
         ]);
 
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function deleteTournament($id)
