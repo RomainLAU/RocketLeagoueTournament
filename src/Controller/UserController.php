@@ -50,7 +50,8 @@ class UserController extends Controller
 
 
                 if($_SESSION['user']['timeRole'] === 0){
-                    $_SESSION['user']['role'] === "user";
+                    $this->userModel->changeRole();
+                    $_SESSION['user']['role'] = 'user';
                 }
 
                 header('Location:/');

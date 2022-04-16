@@ -80,5 +80,12 @@ class UserModel extends Model
         ]);
         $_SESSION["user"]["timeRole"] = $_SESSION["user"]["timeRole"] + strtotime('now') + 604800 ; 
     }
+    public function changeRole() {
 
+        $statement = $this->pdo->prepare('UPDATE `user` SET `role` = :role, `timeRole`= :timeRole WHERE `id` = :id');
+        $statement->execute([
+            'role' => "user",
+            'id' => $_SESSION['user']['id'], 
+        ]);
+    }
 }
