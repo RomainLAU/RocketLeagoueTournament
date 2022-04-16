@@ -20,16 +20,16 @@
                             <input type="submit" value="Delete" name="{{tournament.id}}">
                         </form>
                         <form method="POST" action="/listTournament/addPlayer">
-                            <input type="submit" value="Add player" name="{{tournament.id}}">
                             <input type="text" placeholder="Player Pseudo" name="playerPseudo">
+                            <input type="submit" value="Add player" name="{{tournament.id}}">
                         </form>
                     {% elseif session.user.pseudo == tournament.host%}
-                      <form method="POST" action="/listTournament/delete">
+                        <form method="POST" action="/listTournament/delete">
                             <input type="submit" value="Delete" name="{{tournament.id}}">
                         </form>
                         <form method="POST" action="/listTournament/addPlayer">
-                            <input type="submit" value="Add player" name="{{tournament.id}}">
                             <input type="text" placeholder="Player Pseudo" name="playerPseudo">
+                            <input type="submit" value="Add player" name="{{tournament.id}}">
                         </form>
                     {% elseif (session.user.role == 'user')%}
                         <form method="POST" action="/listTournament/join">

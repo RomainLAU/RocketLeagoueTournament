@@ -42,7 +42,7 @@ class TournamentModel extends Model
 
     public function findOneTournament(int $id)
     {
-        $statement = $this->pdo->prepare('SELECT tournament.name, tournament.host, tournament.admissionPrice, user.pseudo 
+        $statement = $this->pdo->prepare('SELECT tournament.name, tournament.host, tournament.admissionPrice, user.id, user.pseudo, tournament.isFinished, tournament.winner
                                         FROM tournament
                                         LEFT JOIN participant ON participant.tournament_id = tournament.id
                                         LEFT JOIN user ON participant.user_id = user.id
@@ -146,5 +146,15 @@ class TournamentModel extends Model
         ]);
 
         return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function selectWinner($tournamentId, $isFinished, $winnerId) {
+
+        $statement = $this->pdo->prepare('UPDATE `tournament` SET isFinished = :isFinished, winner = :winner WHERE id = :id');
+        $statement->execute([
+            'id' => $tournamentId,
+            'isFinished' => $isFinished,
+            'winner' => $winnerId,
+        ]);
     }
 }

@@ -10,13 +10,14 @@
 
 
 {% if tournamentDetails.tournamentParticipants[0] != null %}
-    <ol>
+    <h3>Participants: </h3>
+    <ul>
         {% for participant in tournamentDetails.tournamentParticipants %}
-            <li>{{ participant }}</li>
+            <li>{{ participant.pseudo }}</li>
         {% endfor %}
-    </ol>
+    </ul>
 
-    {% if tournamentDetails.host != session.user.pseudo or session.user.role == 'admin' %}
+    {% if (tournamentDetails.host == session.user.pseudo or session.user.role == 'admin') and tournamentDetails.isFinished == 'false' %}
         <a href={{ "/listTournament/" ~ tournamentId ~ "/createMatch"}}>Create a match</a>
     {% endif %}
 
@@ -29,13 +30,25 @@
                     Match terminé.
                 {% else %}
                     Match en cours. <br>
-                        {% if tournamentDetails.host != session.user.pseudo %}
+                        {% if (tournamentDetails.host != session.user.pseudo or session.user.role == 'admin') and tournamentDetails.0.isFinished == 'false' %}
                             <a href={{ "/listTournament/" ~ tournamentId ~ "/updateMatch/" ~ match.id }}>Update the match</a>
                         {% endif %}
                 {% endif %}
             </li>
         {% endfor %}
     </ol>
+
+    {% if (tournamentDetails.host != session.user.pseudo or session.user.role == 'admin') and tournamentDetails.0.isFinished == 'false' %}
+        <h4>Is tournament finished ? If so, you can choose the winner that will get the price: </h4>
+        <p>(click on the participant to select the winner)</p>
+            <ul>
+            {% for participant in tournamentDetails.tournamentParticipants %}
+                <li><a href={{ "/listTournament/" ~ tournamentId ~ "/setWinner/" ~ participant.id}}>{{ participant.pseudo }}</a></li>
+            {% endfor %}
+        </ul>
+    {% elseif tournamentDetails.isFinished == 'true' %}
+        <h3>The winner is {{ tournamentDetails.winnerPseudo }}</h3>
+    {% endif %}
 {% else %}
     <p>No players joined yet, be the first one !</p>
 {% endif %}

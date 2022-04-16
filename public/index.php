@@ -123,6 +123,8 @@ $router->mount('/listTournament/(\d+)', function() use ($router) {
     $router->get('/updateMatch/(\d+)', 'Mvc\Controller\TournamentController@updateMatch');
 
     $router->post('/updateMatch/(\d+)', 'Mvc\Controller\TournamentController@updateMatch');
+
+    $router->get('/setWinner/(\d+)', 'Mvc\Controller\TournamentController@setWinner');
 });
 
 $router->get('/deconnection', function() {
