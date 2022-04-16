@@ -20,25 +20,38 @@
             {% if session.user.role == 'admin' %}
 
                 <a href="/">Accueil</a>
+                <a href="/profile">Profile</a>
                 <a href="/createTournament">Create Tournament As Admin</a>
-                <a href="/listTournament">List Tournament</a> 
-                <a href="/buyToken">Buy Token</a>
+                <a href="/listTournament">List Tournaments</a> 
+                <a href="/buyToken">Buy Tokens</a>
                 <a href="/deconnection">Disconnect</a>
-                <p>You have {{session.user.token}} token</p>
+                <p>You have {{session.user.token}} tokens</p>
+
+            {% elseif session.user.role == 'host' %}
+
+                <a href="/">Accueil</a>
+                <a href="/profile">Profile</a>
+                <a href="/createTournament">Create Tournament As Host</a>
+                <a href="/listTournament">List Tournaments</a> 
+                <a href="/buyToken">Buy Tokens</a>
+                <a href="/deconnection">Disconnect</a>
+                <p>You have {{session.user.token}} tokens</p>
 
             {% elseif session.user.role == 'user' %}
 
                     <a href="/">Accueil</a>
-                    <a href="/listTournament">List Tournament</a>
-                    <a href="/buyToken">Buy Token</a>
+                    <a href="/profile">Profile</a>
+                    <a href="/listTournament">List Tournaments</a>
+                    <a href="/buyToken">Buy Tokens</a>
                     <a href="/deconnection">Disconnect</a>
-                    <p>You have {{session.user.token}} token</p>
+                    <p>You have {{session.user.token}} tokens</p>
 
             {% endif %}
 
         {% else %}
 
             <a href="/">Accueil</a>
+            <a href="/listTournament">List Tournament</a>
             <a href="/login">Login</a>
             <a href="/register">Register</a>
     

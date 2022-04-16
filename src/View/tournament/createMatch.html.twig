@@ -1,0 +1,41 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Create A Match{% endblock %}
+
+
+{% block content %}
+
+    <h1>Create a match</h1>
+    <p>Please, fill all the informations you currently have on this match. <br>
+        You'll be able to update it Later.</p>
+
+    <form action="" method="POST">
+        <label for="goal_player1">First Player:</label>
+        <select id="player1" name="player1">
+            <option value="">-- Please select the first player --</option>
+            {% for participant in participants %}
+                <option value="{{ participant.id }}">{{ participant.pseudo }}</option>
+            {% endfor %}
+        </select><br>
+        <label for="goal_player1">First Player Goals:</label>
+        <input type="number" placeholder="First Player Goals" name="goal_player1" id="goal_player1" value="0"><br>
+        <label for="goal_player1">Second Player:</label>
+        <select id="player2" name="player2">
+            <option value="">-- Please select the second player --</option>
+            {% for participant in participants %}
+                <option value="{{ participant.id }}">{{ participant.pseudo }}</option>
+            {% endfor %}
+        </select><br>
+        <label for="goal_player2">Second Player Goals:</label>
+        <input type="number" placeholder="First Player Goals" name="goal_player2" id="goal_player2" value="0"><br>
+        <label for="goal_player2" hidden>Tournament ID:</label>
+        <input type="number" name="tournament_id" id="tournament_id" value="{{ tournament }}" hidden>
+        <label for="isFinished">Is The Match Finished ? </label><br>
+        <label for="false">No </label>
+        <input type="radio" name="isFinished" id="false" value="false" checked>
+        <label for="true">Yes </label>
+        <input type="radio" name="isFinished" id="true" value="true"><br>
+        <input type="submit" value="Create" name="buttonCreateMatch">
+    </form>
+
+{% endblock %}

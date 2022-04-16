@@ -17,16 +17,17 @@ class UserController extends Controller
 
     public function register() {
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pseudo']) && isset($_POST['lastname']) && isset($_POST['firstname']) && isset($_POST['mail']) && isset($_POST['password'])) {
-
-            $this->userModel->createUser($_POST['pseudo'], $_POST['lastname'], $_POST['firstname'], $_POST['mail'], password_hash($_POST['password'], PASSWORD_DEFAULT));
+        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+           
+            $this->userModel->createUser($_POST['pseudo'],$_POST['lastname'], $_POST['firstname'], $_POST['mail'], password_hash($_POST['password'], PASSWORD_DEFAULT));
 
             header('location: /login');
             exit();
         }
-
         echo $this->twig->render('user/register.html.twig');
+        
     }
+
 
     public function login() {
 
@@ -44,7 +45,13 @@ class UserController extends Controller
                     'mail' => $account['mail'],
                     'role' => $account['role'],
                     'token' => $account['token'],
+                    'timeRole' => $account['timeRole'] - strtotime('now'),
                 ];
+
+
+                if($_SESSION['user']['timeRole'] === 0){
+                    $_SESSION['user']['role'] === "user";
+                }
 
                 header('Location:/');
                 exit();
@@ -73,4 +80,33 @@ class UserController extends Controller
         
         echo $this->twig->render('user/buyToken.html.twig');
     }
+
+    public function buyHost() {
+
+        if ($_SESSION['user']['token'] >= 1000) {
+
+
+            $this->userModel->buyHost();
+
+            $_SESSION['user']['role'] = 'host';
+            $_SESSION['user']['token'] = $this->userModel->findUserById($_SESSION['user']['id'])['token'];
+
+            header('location: /profile');
+            exit();
+        }else{
+            header('location: /profile');
+        }
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
 }

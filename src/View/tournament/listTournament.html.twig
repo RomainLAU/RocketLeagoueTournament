@@ -38,6 +38,42 @@
                         {% endif %}
                     </li>
             {% endfor %}
+        {# {% for tournament in tournaments %}
+
+            <li class="tournament">
+                <span><b>Title:</b> {{ tournament.name }}<br></span>
+                <span><b>Price:</b> {{ tournament.admissionPrice }}<br></span>
+                <span><b>Host:</b> {{ tournament.host }}<br></span>
+                <span><a href="/listTournament/{{ tournament.id }}">Voir</a></span>
+                {% if session and tournament.isFinished == 'false' %}
+                    {% if session.user.role == 'admin' %}
+                        <form method="POST" action="/listTournament/delete">
+                            <input type="submit" value="Delete" name="{{tournament.id}}">
+                        </form>
+                        <form method="POST" action="/listTournament/addPlayer">
+                            <input type="text" placeholder="Player Pseudo" name="playerPseudo">
+                            <input type="submit" value="Add player" name="{{tournament.id}}">
+                        </form>
+                    {% elseif session.user.pseudo == tournament.host %}
+                        <form method="POST" action="/listTournament/delete">
+                            <input type="submit" value="Delete" name="{{tournament.id}}">
+                        </form>
+                        <form method="POST" action="/listTournament/addPlayer">
+                            <input type="text" placeholder="Player Pseudo" name="playerPseudo">
+                            <input type="submit" value="Add player" name="{{tournament.id}}">
+                        </form>
+                    {% elseif (session.user.role == 'user' or (session.user.role == 'host' and tournament.host != session.user.pseudo))%}
+                        <form method="POST" action="/listTournament/join">
+                            <input type="submit" value="join" name="{{ tournament.id }}">
+                        </form>
+                    {% endif %}
+                {% elseif session and session.user.role == 'admin' %}
+                    <form method="POST" action="/listTournament/delete">
+                        <input type="submit" value="Delete" name="{{tournament.id}}">
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %} #}
     </ul>
 
 

@@ -1,17 +1,9 @@
 <?php
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 session_start();
 
 $router = new \Bramus\Router\Router();
-
-$router->before('GET', '/admin', function() {
-    if (!(isset($_SESSION['user']))) {
-        header('location: /login');
-        exit();
-    }
-});
 
 $router->before('GET', '/register', function() {
     if (isset($_SESSION['user'])) {
@@ -27,9 +19,9 @@ $router->before('GET', '/login', function() {
     }
 });
 
-$router->before('GET', '/createTournament', function() {
-    if (!isset($_SESSION['user'])) {
-        header('location: /login');
+$router->before('GET', 'createTournament', function() {
+    if (!isset($_SESSION) || $_SESSION['user']['role'] === 'user') {
+        header('location: /');
         exit();
     }
 });
@@ -40,27 +32,17 @@ $router->before('GET', '/buyToken', function() {
         exit();
     }
 });
-$router->before('GET', '/listTournament', function() {
-    if (!isset($_SESSION['user'])) {
-        header('location: /login');
-        exit();
-    }
-});
+
 $router->before('GET', '/delete', function() {
-    if (isset($_SESSION['user'])) {
+    if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'user' ) {
         header('location: /');
         exit();
     }
 });
+
 $router->before('GET', '/delete', function() {
     if (!isset($_SESSION['user'])) {
         header('location: /login');
-        exit();
-    }
-});
-$router->before('GET', '/join', function() {
-    if (isset($_SESSION['user'])) {
-        header('location: /');
         exit();
     }
 });
@@ -71,21 +53,31 @@ $router->before('GET', '/join', function() {
     }
 });
 $router->before('GET', '/addPlayer', function() {
-    if (isset($_SESSION['user'])) {
+    if (!isset($_SESSION['user']) || ($_SESSION['user']['role'] === 'user')) {
         header('location: /');
         exit();
     }
 });
-$router->before('GET', '/addPlayer', function() {
+
+$router->before('GET', '/profile', function() {
     if (!isset($_SESSION['user'])) {
         header('location: /login');
         exit();
     }
 });
 
+$router->get('/profile', 'Mvc\Controller\ProfileController@displayProfile');
+
+$router->before('GET', '/profile/buyHost', function() {
+    if ($_SESSION['user']['role'] === 'admin' || $_SESSION['user']['role'] === 'host') {
+        header('location: /profile');
+        exit();
+    }
+});
+
+$router->get('/profile/buyHost', 'Mvc\Controller\UserController@buyHost');
+
 $router->get('/', 'Mvc\Controller\AccueilController@displayAccueil');
-$router->get('/userConnected', 'Mvc\Controller\AccueilController@displayAccueilUserConnected');
-$router->get('/adminConnected', 'Mvc\Controller\AccueilController@displayAccueilAdminConnected');
 
 $router->get('/register', 'Mvc\Controller\UserController@register');
 $router->post('/register', 'Mvc\Controller\UserController@register');
@@ -116,10 +108,22 @@ $router->mount('/listTournament', function() use ($router) {
     $router->post('/addPlayer', 'Mvc\Controller\TournamentController@addPlayerTournament');
 });
 
+$router->mount('/listTournament/(\d+)', function() use ($router) {
+
+    $router->get('/createMatch', 'Mvc\Controller\TournamentController@createMatch');
+    
+    $router->post('/createMatch', 'Mvc\Controller\TournamentController@createMatch');
+
+    $router->get('/updateMatch/(\d+)', 'Mvc\Controller\TournamentController@updateMatch');
+
+    $router->post('/updateMatch/(\d+)', 'Mvc\Controller\TournamentController@updateMatch');
+
+    $router->get('/setWinner/(\d+)', 'Mvc\Controller\TournamentController@setWinner');
+});
 
 $router->get('/deconnection', function() {
     session_destroy();
-    header('location: /login');
+    header('location: /');
 });
 
 $router->run();

@@ -51,18 +51,18 @@ class TournamentModel extends Model
 
     public function findOneTournament(int $id)
     {
-        $statement = $this->pdo->prepare('SELECT tournament.name, tournament.host, tournament.admissionPrice, user.pseudo 
-                                        FROM participant
-                                        INNER JOIN tournament ON participant.tournament_id = tournament.id
-                                        INNER JOIN user ON participant.user_id = user.id
-                                        WHERE tournament.id = :id');
+        $statement = $this->pdo->prepare('SELECT tournament.name, tournament.host, tournament.admissionPrice, user.id, user.pseudo, tournament.isFinished, tournament.winner
+                                        FROM tournament
+                                        LEFT JOIN participant ON participant.tournament_id = tournament.id
+                                        LEFT JOIN user ON participant.user_id = user.id
+                                        WHERE tournament.id = :id;');
         $statement->execute([
             'id' => $id,
         ]);
 
-        
+        $tournamentInformations = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $tournamentInformations;
     }
 
     public function findParticipants(int $tournamentId)
@@ -72,7 +72,7 @@ class TournamentModel extends Model
             'tournament_id' => $tournamentId,
         ]);
 
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -92,6 +92,7 @@ class TournamentModel extends Model
             'tournament_id' => $id,
             'user_id' => $_SESSION['user']['id'],
         ]);
+        
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -103,7 +104,67 @@ class TournamentModel extends Model
         ]);
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function getParticipants($tournamentId) {
+
+        $statement = $this->pdo->prepare('SELECT * FROM `participant` WHERE tournament_id = :tournament_id');
+        $statement->execute([
+            'tournament_id' => $tournamentId,
+        ]);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function createMatch($player1, $goal_player1, $player2, $goal_player2, $tournamentId, $isFinished) {
+
+        $statement = $this->pdo->prepare('INSERT INTO `matches` (`player1`, `goal_player1`, `player2`, `goal_player2`, `tournament_id`, `isFinished`) VALUES (:player1, :goal_player1, :player2, :goal_player2, :tournament_id, :isFinished)');
+        $statement->execute([
+            'player1' => $player1,
+            'goal_player1' => $goal_player1,
+            'player2' => $player2,
+            'goal_player2' => $goal_player2,
+            'tournament_id' => $tournamentId,
+            'isFinished' => $isFinished,
+        ]);
+    }
+
+    public function updateMatch($matchId, $goal_player1, $goal_player2, $isFinished) {
+
+        $statement = $this->pdo->prepare('UPDATE `matches` SET `goal_player1` = :goal_player1, `goal_player2` = :goal_player2, `isFinished` = :isFinished WHERE `id` = :matchId');
+        $statement->execute([
+            'matchId' => $matchId,
+            'goal_player1' => $goal_player1,
+            'goal_player2' => $goal_player2,
+            'isFinished' => $isFinished,
+        ]);
+    }
+
+    public function getMatches(int $tournamentId) {
+
+        $statement = $this->pdo->prepare('SELECT * FROM `matches` WHERE tournament_id = :tournament_id');
+        $statement->execute([
+            'tournament_id' => $tournamentId,
+        ]);
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getMatchById(int $matchId) {
+
+        $statement = $this->pdo->prepare('SELECT * FROM `matches` WHERE id = :id');
+        $statement->execute([
+            'id' => $matchId,
+        ]);
+
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function selectWinner($tournamentId, $isFinished, $winnerId) {
+
+        $statement = $this->pdo->prepare('UPDATE `tournament` SET isFinished = :isFinished, winner = :winner WHERE id = :id');
+        $statement->execute([
+            'id' => $tournamentId,
+            'isFinished' => $isFinished,
+            'winner' => $winnerId,
+        ]);
+    }
 }
-
-
-
