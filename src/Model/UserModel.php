@@ -67,6 +67,16 @@ class UserModel extends Model
             'firstname' => $firstname,
         ]);
         return $statement->fetch(PDO::FETCH_ASSOC);
-    }    
+    }
+
+    public function buyHost() {
+
+        $statement = $this->pdo->prepare('UPDATE `user` SET `role` = :role, `token` = :token WHERE `id` = :id');
+        $statement->execute([
+            'role' => 'host',
+            'token' => intval($_SESSION['user']['token']) - 1000,
+            'id' => $_SESSION['user']['id'], 
+        ]);
+    }
 
 }

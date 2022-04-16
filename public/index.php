@@ -78,6 +78,24 @@ $router->before('GET', '/addPlayer', function() {
     }
 });
 
+$router->before('GET', '/profile', function() {
+    if (!isset($_SESSION['user'])) {
+        header('location: /login');
+        exit();
+    }
+});
+
+$router->get('/profile', 'Mvc\Controller\ProfileController@displayProfile');
+
+$router->before('GET', '/profile/buyHost', function() {
+    if ($_SESSION['user']['role'] === 'admin' || $_SESSION['user']['role'] === 'host') {
+        header('location: /profile');
+        exit();
+    }
+});
+
+$router->get('/profile/buyHost', 'Mvc\Controller\UserController@buyHost');
+
 $router->get('/', 'Mvc\Controller\AccueilController@displayAccueil');
 
 $router->get('/register', 'Mvc\Controller\UserController@register');

@@ -74,4 +74,19 @@ class UserController extends Controller
         
         echo $this->twig->render('user/buyToken.html.twig');
     }
+
+    public function buyHost() {
+
+        if ($_SESSION['user']['token'] >= 1000) {
+
+
+            $this->userModel->buyHost();
+
+            $_SESSION['user']['role'] = 'host';
+            $_SESSION['user']['token'] = $this->userModel->findUserById($_SESSION['user']['id'])['token'];
+
+            header('location: /profile');
+            exit();
+        }
+    }
 }
