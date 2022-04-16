@@ -200,7 +200,7 @@ class TournamentController extends Controller
 
         if (isset($_POST['buttonCreateMatch'])) {
 
-            if (strlen($_POST['player1']) > 0 && strlen($_POST['player2']) > 0 && isset($_POST['goal_player1']) && isset($_POST['goal_player2'])) {
+            if (strlen($_POST['player1']) > 0 && strlen($_POST['player2']) > 0 && isset($_POST['goal_player1']) && isset($_POST['goal_player2']) && $_POST['player1'] !== $_POST['player2']) {
 
                 $this->tournamentModel->createMatch($_POST['player1'], $_POST['goal_player1'], $_POST['player2'], $_POST['goal_player2'], $tournamentId, $_POST['isFinished']);
             
@@ -208,7 +208,7 @@ class TournamentController extends Controller
                 exit();
             } else {
 
-                echo "<p style='color:red;'>Please fill all the fields</p>";
+                echo "<p style='color:red;'>Please fill all the fields and select different players (if you can't right now, then just wait :) ).</p>";
             }
         }
 
