@@ -5,13 +5,6 @@ session_start();
 
 $router = new \Bramus\Router\Router();
 
-$router->before('GET', '/admin', function() {
-    if (!(isset($_SESSION['user']))) {
-        header('location: /login');
-        exit();
-    }
-});
-
 $router->before('GET', '/register', function() {
     if (isset($_SESSION['user'])) {
         header('location: /');
@@ -26,9 +19,9 @@ $router->before('GET', '/login', function() {
     }
 });
 
-$router->before('GET', '/createTournament', function() {
-    if (!isset($_SESSION['user'])) {
-        header('location: /login');
+$router->before('GET', 'createTournament', function() {
+    if (!isset($_SESSION) || $_SESSION['user']['role'] === 'user') {
+        header('location: /');
         exit();
     }
 });
@@ -41,7 +34,7 @@ $router->before('GET', '/buyToken', function() {
 });
 
 $router->before('GET', '/delete', function() {
-    if (isset($_SESSION['user'])) {
+    if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'user' ) {
         header('location: /');
         exit();
     }
@@ -54,26 +47,14 @@ $router->before('GET', '/delete', function() {
     }
 });
 $router->before('GET', '/join', function() {
-    if (isset($_SESSION['user'])) {
-        header('location: /');
-        exit();
-    }
-});
-$router->before('GET', '/join', function() {
     if (!isset($_SESSION['user'])) {
         header('location: /login');
         exit();
     }
 });
 $router->before('GET', '/addPlayer', function() {
-    if (isset($_SESSION['user'])) {
+    if (!isset($_SESSION['user']) || ($_SESSION['user']['role'] === 'user')) {
         header('location: /');
-        exit();
-    }
-});
-$router->before('GET', '/addPlayer', function() {
-    if (!isset($_SESSION['user'])) {
-        header('location: /login');
         exit();
     }
 });

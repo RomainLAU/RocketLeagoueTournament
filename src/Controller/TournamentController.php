@@ -181,7 +181,7 @@ class TournamentController extends Controller
 
         $users = $this->tournamentModel->findAllUsers();
 
-        if (isset($_POST)) {
+        if (isset($_POST) && is_int($_POST['playerPseudo'])) {
 
             foreach ($users as $key => $user) {
 
