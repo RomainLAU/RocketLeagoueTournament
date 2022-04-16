@@ -21,7 +21,7 @@
         <input type="number" placeholder="First Player Goals" name="goal_player1" id="goal_player1" value="0"><br>
         <label for="goal_player1">Second Player:</label>
         <select id="player2" name="player2">
-            <option value="">-- Please select the first player --</option>
+            <option value="">-- Please select the second player --</option>
             {% for participant in participants %}
                 <option value="{{ participant.id }}">{{ participant.pseudo }}</option>
             {% endfor %}
