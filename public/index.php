@@ -53,7 +53,7 @@ $router->before('GET', '/join', function() {
     }
 });
 $router->before('GET', '/addPlayer', function() {
-    if (!isset($_SESSION['user']) || ($_SESSION['user']['role'] === 'user')) {
+    if (!isset($_SESSION['user']) || $_SESSION['user']['role'] === 'user') {
         header('location: /');
         exit();
     }

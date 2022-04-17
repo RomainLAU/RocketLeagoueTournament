@@ -25,7 +25,7 @@ class TournamentController extends Controller
 
             $_SESSION["user"]["token"] =  $_SESSION["user"]["token"] - 100; 
             $this->tournamentModel->createTournament($_POST['name'], $_POST['admissionPrice'], $_SESSION['user']['pseudo']);
-            $this->userModel->spendToken($_SESSION["user"]["token"], $_SESSION["user"]["firstnames"]);
+            $this->userModel->spendToken($_SESSION["user"]["token"], $_SESSION["user"]["firstname"]);
             header('location: /listTournament');
             exit();
         }
@@ -184,18 +184,54 @@ class TournamentController extends Controller
 
         $users = $this->tournamentModel->findAllUser();
 
-        if (isset($_POST) && is_int($_POST['playerPseudo'])) {
+        $participants = $this->tournamentModel->getParticipants($_POST['tournamentId']);
+
+        $playerIdToAdd = [];
+
+        $isAlreadyInTournament = false;
+
+        if (isset($_POST) && strlen($_POST['playerPseudo']) > 0) {
 
             foreach ($users as $key => $user) {
 
                 if ($_POST['playerPseudo'] === $user['pseudo']) {
-                    $this->tournamentModel->addPlayerTournament(key($_POST), $user['id']); 
-                }
-            }    
-        }
 
-        header('location: /listTournament');
-        exit();
+                    foreach ($participants as $participant => $values) {
+
+                        foreach ($values as $index => $value) {
+
+                            if ($index === 'user_id' && $value === $user['id']) {
+
+                                $isAlreadyInTournament = true;
+                            }
+                        }
+                    }
+
+                    if ($isAlreadyInTournament === false) {
+
+                        $playerIdToAdd["tournament_id"] = $_POST['tournamentId'];
+
+                        $playerIdToAdd["user_id"] = $user['id'];
+
+                    }
+                }
+            }  
+
+            if ($isAlreadyInTournament !== true && count($participants) < 8) {
+
+                $this->tournamentModel->addPlayerTournament($_POST['tournamentId'], $playerIdToAdd['user_id']);
+
+                header('location: /listTournament');
+                exit();
+
+            } else {
+
+                // dump($isAlreadyInTournament);
+
+                echo("<p style='color: red;'>Maximum players already joined this tournament or the player you tried to add already joined the tournament.</p>");
+
+            }
+        }
     }
 
     public function createMatch(int $tournamentId) {
@@ -229,8 +265,6 @@ class TournamentController extends Controller
                 }
             }
         }
-
-        // dd($participants);
 
         echo $this->twig->render('tournament/createMatch.html.twig', [
             'tournament' => $tournamentId,

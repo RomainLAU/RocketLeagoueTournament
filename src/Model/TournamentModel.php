@@ -96,7 +96,7 @@ class TournamentModel extends Model
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function addPlayerTournament($id,$idUser){
+    public function addPlayerTournament($id, $idUser){
         $statement = $this->pdo->prepare('INSERT INTO `participant` (`tournament_id`, `user_id`) VALUES (:tournament_id, :user_id)');
         $statement->execute([
             'tournament_id' => $id,

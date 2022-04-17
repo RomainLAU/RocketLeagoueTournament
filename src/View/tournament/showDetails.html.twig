@@ -10,56 +10,89 @@
 
 
 {% if tournamentDetails.tournamentParticipants[0] != null %}
+
     <h3>Participants: </h3>
     <ul>
+
         {% for participant in tournamentDetails.tournamentParticipants %}
+
             <li>{{ participant.pseudo }}</li>
+
         {% endfor %}
+
     </ul>
 
     {% if (tournamentDetails.host == session.user.pseudo or session.user.role == 'admin') and tournamentDetails.isFinished == 'false' %}
+
         <a href={{ "/listTournament/" ~ tournamentId ~ "/createMatch"}}>Create a match</a>
+
     {% endif %}
 
     <ol>
+
         {% for match in matches %}
+
             <li>
                 Players: {{ match.player1_pseudo }} ( {{ match.goal_player1 }} ) VS {{ match.player2_pseudo }} ( {{ match.goal_player2 }} )<br>
 
                 {% if match.isFinished == 'true' %}
+
                     Match terminé.
+
                 {% else %}
+
                     Match en cours. <br>
-                        {% if (tournamentDetails.host != session.user.pseudo and tournamentDetails.0.isFinished == 'false') or session.user.role == 'admin' %}
+
+                        {% if (tournamentDetails.host == session.user.pseudo and tournamentDetails.isFinished == 'false') or session.user.role == 'admin' %}
+
                             <a href={{ "/listTournament/" ~ tournamentId ~ "/updateMatch/" ~ match.id }}>Update the match</a>
+
                         {% endif %}
+
                 {% endif %}
+
             </li>
         {% endfor %}
     </ol>
 
-    {% if (tournamentDetails.host != session.user.pseudo or session.user.role == 'admin') and tournamentDetails.0.isFinished == 'false' %}
+    {% if (tournamentDetails.host == session.user.pseudo or session.user.role == 'admin') and tournamentDetails.isFinished == 'false' %}
+
         <h4>Is tournament finished ? If so, you can choose the winner that will get the price: </h4>
         <p>(click on the participant to select the winner)</p>
             <ul>
+
             {% for participant in tournamentDetails.tournamentParticipants %}
+
                 <li><a href={{ "/listTournament/" ~ tournamentId ~ "/setWinner/" ~ participant.id}}>{{ participant.pseudo }}</a></li>
+
             {% endfor %}
+
         </ul>
+
     {% elseif tournamentDetails.isFinished == 'true' %}
+
         <h3>The winner is {{ tournamentDetails.winnerPseudo }}</h3>
+
     {% endif %}
+
     {% if session.user.role == 'admin' %}
+
         <p>Need to change the winner ?</p>
         <p>(click on the participant to select the winner)</p>
         <ul>
             {% for participant in tournamentDetails.tournamentParticipants %}
+
                 <li><a href={{ "/listTournament/" ~ tournamentId ~ "/setWinner/" ~ participant.id}}>{{ participant.pseudo }}</a></li>
+
             {% endfor %}
         </ul>
+
     {% endif %}
+
 {% else %}
+
     <p>No players joined yet, be the first one !</p>
+
 {% endif %}
 
 {% endblock %}
