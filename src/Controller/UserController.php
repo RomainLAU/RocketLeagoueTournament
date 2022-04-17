@@ -17,13 +17,15 @@ class UserController extends Controller
 
     public function register() {
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if (isset($_POST['register']) && strlen($_POST['lastname'] > 0) && strlen($_POST['firstname']) > 0 && filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL) && strlen($_POST['password']) > 5 && $_POST['passwordConfirm'] === $_POST['password']){
+
            
             $this->userModel->createUser($_POST['pseudo'],$_POST['lastname'], $_POST['firstname'], $_POST['mail'], password_hash($_POST['password'], PASSWORD_DEFAULT));
 
             header('location: /login');
             exit();
         }
+
         echo $this->twig->render('user/register.html.twig');
         
     }
@@ -31,11 +33,11 @@ class UserController extends Controller
 
     public function login() {
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mail']) && isset($_POST['password'])) {
+        if (isset($_POST['login']) && isset($_POST['mail']) && isset($_POST['password'])) {
 
             $account = $this->userModel->loginIn($_POST['mail']);
 
-            if (isset($_POST['password']) && isset($account['password']) && password_verify($_POST['password'], $account['password'])) {
+            if (isset($account['password']) && password_verify($_POST['password'], $account['password'])) {
 
                 $_SESSION['user'] = [
                     'id' => $account['id'],
@@ -45,11 +47,11 @@ class UserController extends Controller
                     'mail' => $account['mail'],
                     'role' => $account['role'],
                     'token' => $account['token'],
-                    'timeRole' => $account['timeRole'] - strtotime('now'),
+                    'timeRole' => $account['timeRole'],
                 ];
 
+                if ($_SESSION['user']['timeRole'] === date('Y-m-d')) {
 
-                if($_SESSION['user']['timeRole'] === 0){
                     $this->userModel->changeRole();
                     $_SESSION['user']['role'] = 'user';
                 }
@@ -86,7 +88,6 @@ class UserController extends Controller
 
         if ($_SESSION['user']['token'] >= 1000) {
 
-
             $this->userModel->buyHost();
 
             $_SESSION['user']['role'] = 'host';
@@ -94,20 +95,10 @@ class UserController extends Controller
 
             header('location: /profile');
             exit();
-        }else{
+
+        } else {
+
             header('location: /profile');
         }
     }
-    
-
-
-
-
-
-
-
-
-
-
-
 }
