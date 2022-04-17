@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: database:3306
--- Generation Time: Apr 17, 2022 at 02:43 AM
+-- Generation Time: Apr 17, 2022 at 03:53 PM
 -- Server version: 8.0.28
 -- PHP Version: 7.4.20
 
@@ -34,8 +34,8 @@ CREATE TABLE `matches` (
   `player2` int NOT NULL,
   `goal_player2` int NOT NULL DEFAULT '0',
   `tournament_id` int NOT NULL,
-  `isFinished` varchar(5) NOT NULL DEFAULT 'false'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `isFinished` varchar(5) COLLATE utf8_bin NOT NULL DEFAULT 'false'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `matches`
@@ -57,7 +57,7 @@ CREATE TABLE `participant` (
   `id` int NOT NULL,
   `tournament_id` int NOT NULL,
   `user_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `participant`
@@ -79,12 +79,12 @@ INSERT INTO `participant` (`id`, `tournament_id`, `user_id`) VALUES
 
 CREATE TABLE `tournament` (
   `id` int NOT NULL,
-  `name` varchar(64) NOT NULL,
-  `host` varchar(64) NOT NULL,
-  `admissionPrice` varchar(64) NOT NULL,
-  `isFinished` varchar(5) NOT NULL DEFAULT 'false',
-  `winner` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `host` varchar(64) COLLATE utf8_bin NOT NULL,
+  `admissionPrice` varchar(64) COLLATE utf8_bin NOT NULL,
+  `isFinished` varchar(5) COLLATE utf8_bin NOT NULL DEFAULT 'false',
+  `winner` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `tournament`
@@ -102,15 +102,15 @@ INSERT INTO `tournament` (`id`, `name`, `host`, `admissionPrice`, `isFinished`, 
 
 CREATE TABLE `user` (
   `id` int NOT NULL,
-  `pseudo` varchar(255) NOT NULL,
-  `firstname` varchar(64) NOT NULL,
-  `lastname` varchar(64) NOT NULL,
-  `mail` varchar(64) NOT NULL,
-  `password` varchar(64) NOT NULL,
-  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'user',
+  `pseudo` varchar(255) COLLATE utf8_bin NOT NULL,
+  `firstname` varchar(64) COLLATE utf8_bin NOT NULL,
+  `lastname` varchar(64) COLLATE utf8_bin NOT NULL,
+  `mail` varchar(64) COLLATE utf8_bin NOT NULL,
+  `password` varchar(64) COLLATE utf8_bin NOT NULL,
+  `role` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT 'user',
   `token` int NOT NULL DEFAULT '0',
-  `timeRole` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `timeRole` varchar(255) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `user`
