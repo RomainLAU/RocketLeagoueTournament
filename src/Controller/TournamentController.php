@@ -66,7 +66,7 @@ class TournamentController extends Controller
                 'admissionPrice' => $tournament[0]['admissionPrice'],
                 'isFinished' => $tournament[0]['isFinished'],
                 'winner' => $tournament[0]['winner'],
-                'tournamentParticipants' => $tournamentParticipants
+                'tournamentParticipants' => $tournamentParticipants,
             ];
 
         } else if (count($tournamentParticipants) > 0 && $tournament[0]['isFinished'] === 'false') {
@@ -75,14 +75,14 @@ class TournamentController extends Controller
                 'host' => $tournament[0]['host'],
                 'admissionPrice' => $tournament[0]['admissionPrice'],
                 'isFinished' => $tournament[0]['isFinished'],
-                'tournamentParticipants' => $tournamentParticipants
+                'tournamentParticipants' => $tournamentParticipants,
             ];
 
         } else {
 
             $tournamentDetails = ['name' => $tournament[0]['name'],
                 'host' => $tournament[0]['host'],
-                'admissionPrice' => $tournament[0]['admissionPrice']
+                'admissionPrice' => $tournament[0]['admissionPrice'],
             ];
         }
 
@@ -114,12 +114,15 @@ class TournamentController extends Controller
         }
 
         if (count($matches) > 0) {
+
             echo $this->twig->render('tournament/showDetails.html.twig', [
                 'tournamentDetails' => $tournamentDetails,
                 'matches' => $matches,
                 'tournamentId' => $id,
             ]);
+
         } else {
+            
             echo $this->twig->render('tournament/showDetails.html.twig', [
                 'tournamentDetails' => $tournamentDetails,
                 'tournamentId' => $id,
@@ -168,10 +171,12 @@ class TournamentController extends Controller
 
                 $_SESSION['user']['token'] -= $tournamentPrice;
 
-                header('location: /listTournament');
+                header('location: /listTournament/' . key($_POST));
                 exit();
 
             } else {
+
+                dump($participants, $isPlayerInTournament, $hasEnoughToken);
 
                 echo("<p style='color: red;'>Maximum players already joined this tournament or you already joined the tournament or you don't have enough tokens.</p>");
 
@@ -225,8 +230,6 @@ class TournamentController extends Controller
                 exit();
 
             } else {
-
-                // dump($isAlreadyInTournament);
 
                 echo("<p style='color: red;'>Maximum players already joined this tournament or the player you tried to add already joined the tournament.</p>");
 

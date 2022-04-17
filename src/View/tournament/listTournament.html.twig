@@ -1,7 +1,6 @@
-{% extends "/base.html.twig" %}
+{% extends "base.html.twig" %}
 
 {% block title %}List Tournament{% endblock %}
-
 
 {% block content %}
     
@@ -9,53 +8,104 @@
     <ul id="tournament-list">
         {% for tournament in tournaments %}
 
-            <li class="tournament">
-                <span><b>Title:</b> {{ tournament.name }}<br></span>
-                <span><b>Price:</b> {{ tournament.admissionPrice }}<br></span>
-                <span><b>Host:</b> {{ tournament.host }}<br></span>
-                <span><a href="/listTournament/{{ tournament.id }}">Voir</a></span>
+            {% if tournament.isFinished == 'true' %}
 
-                {% if session and tournament.isFinished == 'false' %}
+                <li class="finishtournament">
+                    <span><b>Title:</b> {{ tournament.name }}<br></span>
+                    <span><b>Price:</b> {{ tournament.admissionPrice }}<br></span>
+                    <span><b>Host:</b> {{ tournament.host }}<br></span>
+                    <span><a href="/listTournament/{{ tournament.id }}">See</a></span>
 
-                    {% if session.user.role == 'admin' %}
+                    {% if session and tournament.isFinished == 'false' %}
+
+                        {% if session.user.role == 'admin' %}
+
+                            <form method="POST" action="/listTournament/delete">
+                                <input type="submit" value="Delete" name="{{tournament.id}}" class="deleteButton">
+                            </form>
+                            <form method="POST" action="/listTournament/addPlayer">
+                                <input type="text" placeholder="Player Pseudo" name="playerPseudo">
+                                <input type="text" name="tournamentId" value="{{tournament.id}}" hidden>
+                                <input type="submit" name="add" value="Add Player">
+                            </form>
+
+                        {% elseif session.user.pseudo == tournament.host %}
+
+                            <form method="POST" action="/listTournament/delete">
+                                <input type="submit" value="Delete" name="{{tournament.id}}" class="deleteButton">
+                            </form>
+                            <form method="POST" action="/listTournament/addPlayer">
+                                <input type="text" placeholder="Player Pseudo" name="playerPseudo">
+                                <input type="text" name="tournamentId" value="{{tournament.id}}" hidden>
+                                <input type="submit" name="add" value="Add Player">
+                            </form>
+
+                        {% elseif (session.user.role == 'user' or (session.user.role == 'host' and tournament.host != session.user.pseudo)) %}
+
+                            <form method="POST" action="/listTournament/join">
+                                <input type="submit" value="join" name="{{ tournament.id }}">
+                            </form>
+
+                        {% endif %}
+
+                    {% elseif session and session.user.role == 'admin' %}
 
                         <form method="POST" action="/listTournament/delete">
-                            <input type="submit" value="Delete" name="{{tournament.id}}">
-                        </form>
-                        <form method="POST" action="/listTournament/addPlayer">
-                            <input type="text" placeholder="Player Pseudo" name="playerPseudo">
-                            <input type="text" name="tournamentId" value="{{tournament.id}}" hidden>
-                            <input type="submit" name="add" value="Add Player">
-                        </form>
-
-                    {% elseif session.user.pseudo == tournament.host %}
-
-                        <form method="POST" action="/listTournament/delete">
-                            <input type="submit" value="Delete" name="{{tournament.id}}">
-                        </form>
-                        <form method="POST" action="/listTournament/addPlayer">
-                            <input type="text" placeholder="Player Pseudo" name="playerPseudo">
-                            <input type="text" name="tournamentId" value="{{tournament.id}}" hidden>
-                            <input type="submit" name="add" value="Add Player">
-                        </form>
-
-                    {% elseif (session.user.role == 'user' or (session.user.role == 'host' and tournament.host != session.user.pseudo)) %}
-
-                        <form method="POST" action="/listTournament/join">
-                            <input type="submit" value="join" name="{{ tournament.id }}">
+                            <input type="submit" value="Delete" name="{{tournament.id}}" class="deleteButton">
                         </form>
 
                     {% endif %}
 
-                {% elseif session and session.user.role == 'admin' %}
+                </li>
+            {% else %}
+                <li class="livetournament">
+                    <span><b>Title:</b> {{ tournament.name }}<br></span>
+                    <span><b>Price:</b> {{ tournament.admissionPrice }}<br></span>
+                    <span><b>Host:</b> {{ tournament.host }}<br></span>
+                    <span><a href="/listTournament/{{ tournament.id }}">See</a></span>
 
-                    <form method="POST" action="/listTournament/delete">
-                        <input type="submit" value="Delete" name="{{tournament.id}}">
-                    </form>
+                    {% if session and tournament.isFinished == 'false' %}
 
-                {% endif %}
+                        {% if session.user.role == 'admin' %}
 
-            </li>
+                            <form method="POST" action="/listTournament/delete">
+                                <input type="submit" value="Delete" name="{{tournament.id}}" class="deleteButton">
+                            </form>
+                            <form method="POST" action="/listTournament/addPlayer">
+                                <input type="text" placeholder="Player Pseudo" name="playerPseudo">
+                                <input type="text" name="tournamentId" value="{{tournament.id}}" hidden>
+                                <input type="submit" name="add" value="Add Player">
+                            </form>
+
+                        {% elseif session.user.pseudo == tournament.host %}
+
+                            <form method="POST" action="/listTournament/delete">
+                                <input type="submit" value="Delete" name="{{tournament.id}}" class="deleteButton">
+                            </form>
+                            <form method="POST" action="/listTournament/addPlayer">
+                                <input type="text" placeholder="Player Pseudo" name="playerPseudo">
+                                <input type="text" name="tournamentId" value="{{tournament.id}}" hidden>
+                                <input type="submit" name="add" value="Add Player">
+                            </form>
+
+                        {% elseif (session.user.role == 'user' or (session.user.role == 'host' and tournament.host != session.user.pseudo)) %}
+
+                            <form method="POST" action="/listTournament/join">
+                                <input type="submit" value="join" name="{{ tournament.id }}">
+                            </form>
+
+                        {% endif %}
+
+                    {% elseif session and session.user.role == 'admin' %}
+
+                        <form method="POST" action="/listTournament/delete">
+                            <input type="submit" value="Delete" name="{{tournament.id}}" class="deleteButton">
+                        </form>
+
+                    {% endif %}
+
+                </li>
+            {% endif %}
         {% endfor %}
     </ul>
     

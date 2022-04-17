@@ -56,7 +56,7 @@ class UserController extends Controller
                     $_SESSION['user']['role'] = 'user';
                 }
 
-                header('Location:/');
+                header('Location: /');
                 exit();
             }
         }
