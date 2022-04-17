@@ -37,7 +37,7 @@ So, to test all features and views here are the credentials for each account:
 - user account :
     - email : theo2008@gmail.com
     - password : theo2008
-    &&
+    - &&
     - email : michelcartier@gmail.com
     - password : goodpassword
 
