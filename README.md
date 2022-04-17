@@ -22,6 +22,7 @@ Install RocketLeagueTournament with git
 
 On PhpMyAdmin, create a database called "tournoi" (yes, a bad name). Then go in the "import" section
 and select the "tournoi.sql" file that is in the "public" folder.
+Credentials and parameters for the connection to the database are in the config folder, in the Model.php file.
 
 #### How to briefly test the website ?
 
