@@ -8,7 +8,7 @@ This is a tournament manager for the game Rocket League.
 
 ## Installation
 
-Install my-project with git
+Install RocketLeagueTournament with git
 
 ```bash
   git clone git@github.com:RomainLAU/RocketLeagueTournament.git
